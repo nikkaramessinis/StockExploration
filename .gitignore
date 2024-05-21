@@ -1,2 +1,6 @@
-secrets.py
+mysecrets.py
 .idea
+__pycache__
+SmaCross*.html
+*.csv
+
