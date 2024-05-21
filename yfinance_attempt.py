@@ -1,4 +1,6 @@
 import yfinance as yf
+from helpers import retrieve_sp500_tickers
+from datetime import date
 
 msft = yf.Ticker("MSFT")
 
@@ -47,7 +49,7 @@ msft.upgrades_downgrades
 
 # Show future and historic earnings dates, returns at most next 4 quarters and last 8 quarters by default.
 # Note: If more are needed use msft.get_earnings_dates(limit=XX) with increased limit argument.
-msft.earnings_dates
+#msft.earnings_dates
 
 # show ISIN code - *experimental*
 # ISIN = International Securities Identification Number
@@ -57,8 +59,26 @@ msft.isin
 msft.options
 
 # show news
-msft.news
+#msft.news
 
 # get option chain for specific expiration
-#opt = msft.option_chain('2024-05-18')
+# opt = msft.option_chain('2024-05-18')
 # data available via: opt.calls, opt.puts
+
+symbols_list = retrieve_sp500_tickers()
+print(symbols_list)
+start_date = '2023-09-27'
+end_date = date.today()
+print(end_date)
+symbols_str = " ".join(symbols_list)
+try:
+    df = yf.download(tickers=symbols_list, start=start_date, end=str(end_date), auto_adjust=True)
+    #df = yf.download(tickers=symbols_list, period="max", auto_adjust=True)
+
+except KeyError:
+    pass
+print(df.head())
+df = df.stack()
+print(df)
+rv_dataframe = df.to_csv("yfinance.csv", index=False)
+print(len(df))
