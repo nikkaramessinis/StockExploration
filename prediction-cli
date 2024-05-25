@@ -1,0 +1,21 @@
+#!/bin/python3
+
+import subprocess
+import os
+
+# Define the directory and file names
+dir_name = 'Strategies'
+notebook_file = os.path.join(dir_name, 'Algorithmic_Trading_Machine_Learning_Quant_Strategies.ipynb')
+script_file = os.path.join(dir_name, 'Algorithmic_Trading_Machine_Learning_Quant_Strategies.py')
+
+# Remove the existing Python script if it exists
+if os.path.exists(script_file):
+    os.remove(script_file)
+
+# Convert the Jupyter notebook to a Python script
+convert_command = ['jupyter', 'nbconvert', '--to', 'script', notebook_file]
+subprocess.run(convert_command, check=True)
+
+# Run the converted Python script
+run_command = ['python3', script_file]
+subprocess.run(run_command, check=True)
