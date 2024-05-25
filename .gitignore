@@ -5,3 +5,4 @@ SmaCross*.html
 *.csv
 
 alpaca/config.py
+/alpaca/config.py
