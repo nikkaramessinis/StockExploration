@@ -3,3 +3,8 @@ and out your api key IEX_CLOUD_API_TOKEN = "" from https://iexcloud.io/
 .Sign in there and copy the api_token there
 
 undervalued calculator is the main python file to run
+
+# Install dependencies
+```
+pip3 install -r requirements.txt -U;
+```
