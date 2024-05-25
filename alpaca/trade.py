@@ -1,7 +1,8 @@
 import json
 
 import requests
-from config import *
+
+from .config import *
 
 ENDPOINT_URL = "https://paper-api.alpaca.markets/v2"
 ACCOUNT_URL = "{}/account".format(ENDPOINT_URL)
@@ -20,6 +21,7 @@ def get_trade_data(symbol):
     return json.loads(request.content)
 
 
+# buy/sell stock
 def create_order(symbol, qty, side, type, time_in_force):
     data = {
         "symbol": symbol,
@@ -33,14 +35,11 @@ def create_order(symbol, qty, side, type, time_in_force):
     return json.loads(r.content)
 
 
+# buy/sell stock
+## response = create_order("AAPL", 1, "buy", "market", "gtc")
+## response = create_order("MSFT", 1, "buy", "market", "gtc")
+
+
 def get_orders():
     r = requests.get(ORDERS_URL, headers=HEADERS)
     return json.loads(r.content)
-
-
-response = create_order("AAPL", 1, "buy", "market", "gtc")
-response = create_order("MSFT", 1, "buy", "market", "gtc")
-
-orders = get_orders()
-
-print(orders)
