@@ -1,24 +1,29 @@
-from backtesting import Backtest, Strategy
+from backtesting import Strategy
 from backtesting.lib import crossover
+<<<<<<< Updated upstream
 
 from backtesting.test import SMA, MACD, GOOG
 
+=======
+from backtesting.test import SMA
+import talib as ta
+>>>>>>> Stashed changes
 
 class SmaCross(Strategy):
+
     def init(self):
-        price = self.data.Close
-        #self.ma1 = self.I(SMA, price, 5)
-        self.ma1 = self.I(SMA, price, 10)
-        self.ma2 = self.I(SMA, price, 25)
-
-
+        self.price = self.data.Close
+        self.ma1 = self.I(ta.SMA, self.price, 15)
 
 
     def next(self):
-        if crossover(self.ma1, self.ma2):# or crossover(self.ma2, self.ma3):
+        # Compare the values
+        if crossover(self.price,self.ma1):
             self.buy()
-        elif crossover(self.ma2, self.ma1):# and crossover(self.ma3, self.ma2):
+        elif crossover(self.ma1, self.price):
+            #self.position.close()
             self.sell()
+
 
 
 import pandas as pd
