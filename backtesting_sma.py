@@ -1,13 +1,7 @@
 from backtesting import Strategy
 from backtesting.lib import crossover
-<<<<<<< Updated upstream
-
-from backtesting.test import SMA, MACD, GOOG
-
-=======
 from backtesting.test import SMA
 import talib as ta
->>>>>>> Stashed changes
 
 class SmaCross(Strategy):
 
@@ -61,8 +55,8 @@ class SmaCross1(SignalStrategy,
         self.set_trailing_sl(2)
 
 
-bt = Backtest(GOOG, SmaCross1, commission=.002,
-              exclusive_orders=True)
-stats = bt.run()
-print(stats)
-bt.plot()
+#bt = Backtest(GOOG, SmaCross1, commission=.002,
+#exclusive_orders=True)
+#stats = bt.run()
+#print(stats)
+#bt.plot()
