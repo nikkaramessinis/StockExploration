@@ -1,0 +1,11 @@
+numpy
+pandas
+notebook
+jupyterlab
+nbconvert
+pandas_ta
+yfinance
+pandas-datareader
+statsmodels
+matplotlib
+ipython

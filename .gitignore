@@ -4,3 +4,8 @@ __pycache__
 SmaCross*.html
 *.csv
 
+alpaca/config.py
+/alpaca/config.py
+
+Strategies-notebooks/*.py
+Strategies-notebooks/.ipynb*
