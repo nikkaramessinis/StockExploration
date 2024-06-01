@@ -47,7 +47,7 @@ def ema_momentum(df):
 
 if __name__=="__main__":
     #main()
-    symbols_list = ["ARM"]
+    symbols_list = ["NKLA"]
     df = fetch_latest_data(symbols_list)
     df = fill_with_ta(df)
     #plot_sma(df)

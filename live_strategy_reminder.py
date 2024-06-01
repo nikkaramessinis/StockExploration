@@ -2,6 +2,14 @@ import time
 import winsound  # For Windows; use pygame for cross-platform support
 from helpers import fetch_latest_data, fill_with_ta, check_crossover
 from helpers import Momentum
+import yagmail
+from mysecrets import GMAIL_PASSWORD, GMAIL_EMAIL_ADDRESS
+
+
+def send_email(body=""):
+    yag = yagmail.SMTP(GMAIL_EMAIL_ADDRESS, GMAIL_PASSWORD)
+    subject = 'Hello from Yagmail!'
+    yag.send(GMAIL_EMAIL_ADDRESS, subject, body)
 
 
 def main():
@@ -14,7 +22,10 @@ def main():
 
         if crossover_status != previous:
             # Trigger the beep sound (implement this part)
-            print(f"Momentum has swifted! We now have an {crossover_status} momentum for {symbols_list[0]}")
+
+            body = (f"Momentum has swifted! We now have an {crossover_status} momentum for {symbols_list[0]}")
+            print(body)
+            send_email(body)
             previous = crossover_status
             winsound.Beep(1000, 500)  # Example beep sound
 

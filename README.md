@@ -18,3 +18,9 @@ and out your api key IEX_CLOUD_API_TOKEN = "" from https://iexcloud.io/
 .Sign in there and copy the api_token there
 
 undervalued calculator is the main python file to run
+
+
+To set-up your email go to my_secrets.py and initialize 
+GMAIL_PASSWORD and GMAIL_EMAIL_ADDRESS 
+GMAIL_PASSWORD needs to be an app password.
+Then send_email will work as a charm.
