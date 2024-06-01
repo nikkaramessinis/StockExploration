@@ -1,77 +1,113 @@
 # Git Cheatsheet
 
-### clone a repo
-```git clone <repo_url>```
+### Repository Setup
 
-### Check the status of files/dirs
-```git status```
+```bash
+# Clone a remote repository
+git clone <repo_url>
+```
+### Working with Branches
 
-### create a new branch
-```git checkout -b <branch_name>```
+```bash
+# List all branches (local and remote)
+git branch -a
 
-### switch to a branch
-```git checkout <branch_name>```
+# Create a new branch
+git checkout -b <branch_name>
 
-### switch to a remote branch
-```git checkout -t origin/<branch_name>```
+# Switch to a branch
+git checkout <branch_name>
 
-OR 
+# Switch to a remote branch
+git checkout -t origin/<branch_name>
+# OR
+git checkout -b <branch_name> <remote_name>/<branch_name>
 
-```git checkout -b <branch_name> <remote_name>/<branch_name>```
+# Fetch all remote branches
+git fetch
+```
 
-### fetch all remote branches
-```git fetch```
+### Managing Files
 
-### add files to commit
-- This will add all the files in the current directory:
+```bash
+# Check the status of files/directories
+git status
 
-```git add -A```
+# Add all files to the staging area
+git add -A
 
-- To add a single file
+# Add a single file to the staging area
+git add <path/to/file>
 
-```git add <path/to/file>```
+# Remove file from the staging area
+git reset <path/to/file>
 
-### commit changes
+# See changes in the working directory
+git diff
 
-```git commit -m "message"```
+# See changes in the staging area
+git diff --cached
+```
 
-### push changes
-```git push origin master```
+### Committing Changes  
 
-OR
+```bash
+# Commit changes with a message
+git commit -m "message"
+```
 
-```git push```
+### Pushing Changes
 
-### pull changes from a branch
-```git pull origin <branch_name>```
+```bash
+# Push changes to the remote repository
+git push origin <branch_name>
+# OR
+git push
 
-### See what you have changed
-```git diff```
+# Pull changes from a remote branch
+git pull origin <branch_name>
 
-- if you have added the files using `git add` command then
+# Pull changes from a remote branch (alternative)
+git pull <remote_name> <branch_name>
+```
 
-```git diff --cached```
+### Viewing History
 
-### See all the commits
-```git log```
+```bash
+# See all commits
+git log
 
-### pull changes from a remote branch
-```git pull <remote_name> <branch_name>```
+# See commits with file changes
+git log --stat
+```
 
-### merge two branches
-```git merge <branch_name>```
+### Merging
 
-### See all the branches
-```git branch -vva```
+```bash
+# Merge another branch into the current branch
+git merge <branch_name>
+```
 
-### stash changes
-```git stash```
+### Stashing Changes
+```bash
+# Stash uncommitted changes
+git stash
 
-### unstash changes
-```git stash apply```
+# Apply the latest stashed changes
+git stash apply
 
-### reset changes
-```git reset```
+# List all stashed changes
+git stash list
+```
 
-### remove all local changes (new dirs, files, etc)
-```git clean -f -d```
+### Resetting and Cleaning
+
+```bash
+# Reset committed changes (soft: keep changes, mixed: keep staged, hard: discard everything)
+git reset --soft <git commit hash>
+git reset --mixed <git commit hash>
+git reset --hard <git commit hash>
+
+# Remove all untracked files and directories
+git clean -f -d
+```
