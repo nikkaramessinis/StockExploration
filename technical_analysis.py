@@ -7,19 +7,18 @@ import matplotlib.pyplot as plt
 from backtesting_sma import SmaCross
 from backtesting import Backtest
 from helpers import fetch_latest_data, fill_with_ta, check_crossover
+import mplfinance as mpf
 
 
 
-def plot_sma(df):
-    plt.plot(df['Close'])
-    plt.plot(df['sma_20'])
-    plt.show()
 
-
-def plot_ema(df):
-    plt.plot(df['Close'])
-    plt.plot(df['ema_20'])
-    plt.show()
+def plot_with_line(df, column):
+    # You can add a plot with another line usually a moving average.
+    ap_ema = mpf.make_addplot(df[column], color='orange', width=1)
+    mpf.plot(df, type='candle', style='charles',
+             title='Candlestick Chart with {column} Line',
+             ylabel='Price', ylabel_lower='Shares Traded',
+             addplot=ap_ema)
 
 
 def sma_momentum(df):
@@ -47,11 +46,11 @@ def ema_momentum(df):
 
 if __name__=="__main__":
     #main()
-    symbols_list = ["NKLA"]
+    symbols_list = ["ARM"]
     df = fetch_latest_data(symbols_list)
     df = fill_with_ta(df)
-    #plot_sma(df)
-    #plot_ema(df)
+    plot_with_line(df, 'sma_20')
+    plot_with_line(df, 'ema_20')
 
     sma_momentum(df)
     check_crossover(df)
