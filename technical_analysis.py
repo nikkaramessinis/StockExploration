@@ -1,9 +1,4 @@
-import numpy as np
-from helpers import retrieve_sp500_tickers
-import pandas_ta
 import pandas as pd
-import talib as ta
-import matplotlib.pyplot as plt
 from backtesting_sma import SmaCross
 from backtesting import Backtest
 from helpers import fetch_latest_data, fill_with_ta, check_crossover
@@ -46,6 +41,7 @@ def ema_momentum(df):
 
 if __name__=="__main__":
     #main()
+    symbols_list = ["ARM", "CDNS", "EVCM",  "MSFT", "NKE", "NKLA", "NVDA"]
     symbols_list = ["ARM"]
     df = fetch_latest_data(symbols_list)
     df = fill_with_ta(df)
@@ -57,6 +53,7 @@ if __name__=="__main__":
     bt = Backtest(df, SmaCross, cash=1000, commission=.002,
               exclusive_orders=True)
     stats = bt.run()
+    print(f"type(stats {type(stats)}")
 
     df_stats = pd.DataFrame(stats)
 
