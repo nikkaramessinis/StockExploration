@@ -9,11 +9,12 @@ from enum import Enum
 class Momentum(Enum):
     UPWARD = "upward"
     DOWNWARD = "downward"
+
 def fill_with_ta(df, write_to_csv = False):
     df['engulfing'] = ta.CDLENGULFING(df['Open'], df['High'], df['Low'], df['Close'])
     df['rsi'] = ta.RSI(df['Close'], timeperiod=14)
-    df['sma_20'] = ta.SMA(df['Close'], 20)
-    df['ema_20'] = ta.EMA(df['Close'], 15)
+    df['sma_20'] = ta.SMA(df['Close'], 15)
+    df['ema_20'] = ta.EMA(df['Close'], 20)
     if write_to_csv:
         df.to_csv("csvs/arm.csv", index=False)
     return df
@@ -33,7 +34,10 @@ def check_crossover(df):
 
 def fetch_latest_data(symbols_list, start_date='2023-09-27'):
     end_date = date.today()
-    df = yf.download(tickers=symbols_list, start=start_date, end=str(end_date), auto_adjust=True)
+    end_date = '2024-05-31'
+    #df = yf.download(tickers=symbols_list, start=start_date, end=str(end_date), auto_adjust=True)
+    ticker_yahoo = yf.Ticker(symbols_list)
+    df = ticker_yahoo.history(start=start_date, end=str(end_date), auto_adjust=True)
     return df
 
 
