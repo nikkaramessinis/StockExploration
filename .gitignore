@@ -9,3 +9,7 @@ alpaca/config.py
 Strategies-notebooks/*.py
 Strategies-notebooks/.ipynb*
 SmaCross*
+*.html
+
+csvs
+csvs/*
