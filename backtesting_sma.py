@@ -12,7 +12,7 @@ class SmaCross(Strategy):
 
     def next(self):
         # Compare the values
-        if crossover(self.price,self.ma1):
+        if crossover(self.price, self.ma1):
             self.buy()
         elif crossover(self.ma1, self.price):
             #self.position.close()

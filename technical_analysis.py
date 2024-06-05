@@ -45,31 +45,34 @@ def ema_momentum(df):
 
 
 def analyze(symbols_list, strategy, hide_graphs=False):
-    print(f"Running technical analysis on {symbols_list} using {strategy} strategy")
-    df = fetch_latest_data(symbols_list)
-    df = fill_with_ta(df)
-    if not hide_graphs:
-        plot_with_line(df, "sma_20")
-        plot_with_line(df, "ema_20")
+    list_of_dfs = []
+    results_dataframe = pd.DataFrame()
 
-    sma_momentum(df)
-    check_crossover(df)
-    bt = Backtest(df, SmaCross, cash=1000, commission=0.002, exclusive_orders=True)
-    stats = bt.run()
-    print(f"type(stats {type(stats)}")
+    for symbol in symbols_list:
+        df = fetch_latest_data(symbol)
+        df = fill_with_ta(df)
+        if not hide_graphs:
+            plot_with_line(df, "sma_20")
+            plot_with_line(df, "ema_20")
 
-    df_stats = pd.DataFrame(stats)
+        sma_momentum(df)
+        check_crossover(df)
+        bt = Backtest(df, SmaCross, cash=1000, commission=0.002, exclusive_orders=True)
+        stats = bt.run()
+        print(f"type(stats {type(stats)}")
+        results_dataframe = results_dataframe._append(stats, ignore_index=True)
+        print(stats)
+        if not hide_graphs:
+            bt.plot()
 
-    # Save the DataFrame to a CSV file
-    df_stats.to_csv("csvs/backtest_results.csv", index=False)
-    print(stats)
-    if not hide_graphs:
-        bt.plot()
+    # results_dataframe = pd.concat(list_of_dfs, ignore_index=True)
+    results_dataframe.to_csv("csvs/stats.csv", index=False)
+
+    print(results_dataframe)
 
 
 if __name__ == "__main__":
-    # Example usage for when this file is run directly
+    # main()
     symbols_list = ["ARM", "CDNS", "EVCM", "MSFT", "NKE", "NKLA", "NVDA"]
-    symbols_list = ["ARM"]
-    strategy = "default_strategy"
-    analyze(symbols_list, strategy)
+    analyze(symbols_list, "backtesting")
+    # Save the DataFrame to a CSV file
