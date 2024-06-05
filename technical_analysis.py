@@ -44,7 +44,7 @@ def ema_momentum(df):
         print("Downward momentum")
 
 
-def analyze(symbols_list, strategy, hide_graphs=False):
+def analyze(symbols_list, strategy="backtesting", hide_graphs=False):
     list_of_dfs = []
     results_dataframe = pd.DataFrame()
 
@@ -74,5 +74,5 @@ def analyze(symbols_list, strategy, hide_graphs=False):
 if __name__ == "__main__":
     # main()
     symbols_list = ["ARM", "CDNS", "EVCM", "MSFT", "NKE", "NKLA", "NVDA"]
-    analyze(symbols_list, "backtesting")
+    analyze(symbols_list)
     # Save the DataFrame to a CSV file
