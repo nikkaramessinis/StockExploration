@@ -1,11 +1,7 @@
-from strategies.technical_analysis import analyze
-
-
 def run_prediction(strategy_name, params):
     strategies = {
         "moving_average": moving_average_strategy,
         "linear_regression": linear_regression_strategy,
-        "technical_analysis": analyze,
         # Add other strategies here
     }
 

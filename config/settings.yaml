@@ -1,4 +1,11 @@
-default_command: technical_analysis
+run_commands:
+  - fetch_stocks
+  - run_strategy
+  - schedule_email
+stocks:
+  - AAPL
+  - MSFT
+  - GOOG
 strategies:
   - name: moving_average
     parameters:

@@ -9,7 +9,7 @@ def create_parser():
     # Fetch stocks command
     fetch_parser = subparsers.add_parser("fetch_stocks", help="Fetch stocks data")
     fetch_parser.add_argument(
-        "--symbols", nargs="+", type=str, help="Stock symbols to fetch"
+        "--stocks", nargs="+", type=str, help="Stock symbols to fetch"
     )
 
     # Run strategy command
