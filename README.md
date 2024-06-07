@@ -24,3 +24,20 @@ To set-up your email go to my_secrets.py and initialize
 GMAIL_PASSWORD and GMAIL_EMAIL_ADDRESS 
 GMAIL_PASSWORD needs to be an app password.
 Then send_email will work as a charm.
+
+
+
+
+# FROM VIVEK:
+
+## How to start the app
+python main.py [command] [options]
+
+if command is not provided it will default to config/setting.yaml default command
+
+## Fetch stock data
+python main.py fetch_stocks --symbol ARM
+OR
+python main.py fetch_stocks --symbols ARM AAPL 
+
+

@@ -1,0 +1,14 @@
+default_command: technical_analysis
+strategies:
+  - name: moving_average
+    parameters:
+      window_size: 50
+  - name: linear_regression
+    parameters:
+      lookback_period: 30
+email_alerts:
+  enabled: true
+  frequency: daily
+  recipients:
+    - "example1@example.com"
+    - "example2@example.com"
