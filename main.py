@@ -1,3 +1,8 @@
+import warnings
+
+# Suppress specific FutureWarnings from backtesting module
+warnings.filterwarnings("ignore", category=FutureWarning, module="backtesting")
+
 import json
 
 from config.config import load_config
@@ -28,14 +33,14 @@ def main():
 
                 run_strategy(Args)
         elif command == "schedule_email":
-            from cli.commands import schedule_email
+            from cli.commands import email_alerts
 
             email_config = config.get("email_alerts", {})
 
             class Args:
                 email = json.dumps(email_config)
 
-            schedule_email(Args)
+            email_alerts(Args)
         else:
             print(f"Unknown command: {command}")
 

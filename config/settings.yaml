@@ -1,6 +1,7 @@
 run_commands:
   - fetch_stocks
   - run_strategy
+  # - email_alerts
 stocks:
   - AAPL
   - MSFT
@@ -10,7 +11,5 @@ strategies:
   - name: technical_analysis
 email_alerts:
   enabled: true
-  frequency: daily
   recipients:
-    - "example1@example.com"
-    - "example2@example.com"
+    - "example@gmail.com"

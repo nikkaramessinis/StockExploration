@@ -39,10 +39,9 @@ def run_strategy(args):
     run_prediction(strategy_name, stocks_list, hide_graphs)
 
 
-def schedule_email(args):
+def email_alerts(args):
     try:
         email_config = json.loads(args.email) if args.email else {}
-        result = schedule_email_alert(email_config)
-        print(f"Email scheduled: {result}")
+        schedule_email_alert(email_config)
     except json.JSONDecodeError:
         print("Invalid JSON format for email configuration.")
