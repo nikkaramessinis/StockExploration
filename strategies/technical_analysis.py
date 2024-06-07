@@ -44,8 +44,7 @@ def ema_momentum(df):
         print("Downward momentum")
 
 
-def analyze(symbols_list, hide_graphs=False):
-    list_of_dfs = []
+def analyze(symbols_list, hide_graphs):
     results_dataframe = pd.DataFrame()
 
     for symbol in symbols_list:

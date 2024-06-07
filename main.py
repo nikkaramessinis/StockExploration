@@ -23,7 +23,8 @@ def main():
 
                 class Args:
                     strategy = strategy_config["name"]
-                    params = json.dumps(strategy_config["parameters"])
+                    stocks_list = config.get("stocks", [])
+                    hide_graphs = config.get("hide_graphs", False)
 
                 run_strategy(Args)
         elif command == "schedule_email":

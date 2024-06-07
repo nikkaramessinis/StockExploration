@@ -1,18 +1,13 @@
 run_commands:
   - fetch_stocks
   - run_strategy
-  - schedule_email
 stocks:
   - AAPL
   - MSFT
   - GOOG
+hide_graphs: true
 strategies:
-  - name: moving_average
-    parameters:
-      window_size: 50
-  - name: linear_regression
-    parameters:
-      lookback_period: 30
+  - name: technical_analysis
 email_alerts:
   enabled: true
   frequency: daily

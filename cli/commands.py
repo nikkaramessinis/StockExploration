@@ -28,18 +28,15 @@ def fetch_stocks(args):
 
 def run_strategy(args):
     strategy_name = args.strategy
-    try:
-        params = json.loads(args.params) if args.params else {}
-    except json.JSONDecodeError:
-        print("Invalid JSON format for parameters.")
-        return
+    stocks_list = args.stocks_list
+    hide_graphs = args.hide_graphs
 
     if not strategy_name:
         print("Strategy name is required.")
         return
 
-    result = run_prediction(strategy_name, params)
-    print(f"Strategy {strategy_name} result: {result}")
+    print(f"Running strategy: {strategy_name}")
+    run_prediction(strategy_name, stocks_list, hide_graphs)
 
 
 def schedule_email(args):

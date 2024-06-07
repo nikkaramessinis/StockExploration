@@ -1,21 +1,18 @@
-def run_prediction(strategy_name, params):
+from strategies.technical_analysis import analyze
+
+
+def run_prediction(strategy_name, stocks_list, hide_graphs):
     strategies = {
-        "moving_average": moving_average_strategy,
+        "technical_analysis": analyze,
         "linear_regression": linear_regression_strategy,
         # Add other strategies here
     }
 
     if strategy_name in strategies:
         strategy = strategies[strategy_name]
-        return strategy(params)
+        return strategy(stocks_list, hide_graphs)
     else:
         return f"Strategy {strategy_name} not found."
-
-
-def moving_average_strategy(params):
-    window_size = params.get("window_size", 50)
-    # Placeholder for actual strategy implementation
-    return f"Running moving average with window size {window_size}"
 
 
 def linear_regression_strategy(params):
