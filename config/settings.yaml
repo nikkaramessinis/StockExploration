@@ -1,0 +1,15 @@
+run_commands:
+  - fetch_stocks
+  - run_strategy
+  # - email_alerts
+stocks:
+  - AAPL
+  - MSFT
+  - GOOG
+hide_graphs: true
+strategies:
+  - name: technical_analysis
+email_alerts:
+  enabled: true
+  recipients:
+    - "example@gmail.com"

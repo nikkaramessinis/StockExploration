@@ -2,8 +2,8 @@ import mplfinance as mpf
 import pandas as pd
 from backtesting import Backtest
 
-from backtesting_sma import SmaCross
-from helpers import check_crossover, fetch_latest_data, fill_with_ta
+from strategies.backtesting_sma import SmaCross
+from utils.helpers import check_crossover, fetch_latest_data, fill_with_ta
 
 
 def plot_with_line(df, column):
@@ -44,8 +44,7 @@ def ema_momentum(df):
         print("Downward momentum")
 
 
-def analyze(symbols_list, strategy="backtesting", hide_graphs=False):
-    list_of_dfs = []
+def analyze(symbols_list, hide_graphs):
     results_dataframe = pd.DataFrame()
 
     for symbol in symbols_list:
@@ -69,10 +68,3 @@ def analyze(symbols_list, strategy="backtesting", hide_graphs=False):
     results_dataframe.to_csv("csvs/stats.csv", index=False)
 
     print(results_dataframe)
-
-
-if __name__ == "__main__":
-    # main()
-    symbols_list = ["ARM", "CDNS", "EVCM", "MSFT", "NKE", "NKLA", "NVDA"]
-    analyze(symbols_list)
-    # Save the DataFrame to a CSV file

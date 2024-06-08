@@ -1,4 +1,3 @@
-mysecrets.py
 .idea
 __pycache__
 SmaCross*.html
@@ -13,3 +12,7 @@ SmaCross*
 
 csvs
 csvs/*
+
+secrets.py
+config/secrets.py
+mysecrets.py
