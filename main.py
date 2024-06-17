@@ -29,7 +29,9 @@ def main():
                 class Args:
                     strategy = strategy_config["name"]
                     stocks_list = config.get("stocks", [])
-                    hide_graphs = config.get("hide_graphs", False)
+                    show_graphs = config.get("show_graphs", False)
+                    show_feqos = config.get("show_feqos", False)
+                    save_reference = config.get("save_reference", False)
 
                 run_strategy(Args)
         elif command == "schedule_email":

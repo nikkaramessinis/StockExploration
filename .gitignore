@@ -15,4 +15,4 @@ csvs/*
 
 secrets.py
 config/secrets.py
-mysecrets.py
+config/secrets.py

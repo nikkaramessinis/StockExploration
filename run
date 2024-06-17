@@ -2,7 +2,7 @@
 import argparse
 
 import config
-import technical_analysis
+import strategies.technical_analysis as technical_analysis
 
 
 def main():
@@ -16,8 +16,14 @@ def main():
     )
     parser.add_argument("-st", "--strategy", help="The strategy to use (optional)")
     parser.add_argument(
+        "-sg",
+        "--show_graphs",
+        action="store_true",
+        help="Hide graphs (optional, defaults to False)",
+    )
+    parser.add_argument(
         "-hg",
-        "--hide_graphs",
+        "--show_feqos",
         action="store_true",
         help="Hide graphs (optional, defaults to False)",
     )
@@ -26,12 +32,13 @@ def main():
 
     symbols = args.symbol
     strategy = args.strategy
-    hide_graphs = args.hide_graphs
+    show_graphs = args.show_graphs
+    show_feqos = args.show_feqos
 
     if not strategy:
         strategy = config.DEFAULT_STRATEGY
 
-    technical_analysis.analyze(symbols, strategy, hide_graphs)
+    technical_analysis.analyze(symbols, strategy, show_graphs, show_feqos)
 
 
 if __name__ == "__main__":

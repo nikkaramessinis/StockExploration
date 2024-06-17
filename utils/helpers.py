@@ -34,7 +34,7 @@ def check_crossover(df):
 
 def fetch_latest_data(symbols_list, start_date='2023-09-27'):
     end_date = date.today()
-    end_date = '2024-05-31'
+    #end_date = '2024-05-31'
     #df = yf.download(tickers=symbols_list, start=start_date, end=str(end_date), auto_adjust=True)
     ticker_yahoo = yf.Ticker(symbols_list)
     df = ticker_yahoo.history(start=start_date, end=str(end_date), auto_adjust=True)

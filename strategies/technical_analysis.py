@@ -3,8 +3,9 @@ import pandas as pd
 from backtesting import Backtest
 
 from strategies.backtesting_sma import SmaCross
+from strategies.backtesting_ema import EmaCross
 from utils.helpers import check_crossover, fetch_latest_data, fill_with_ta
-
+from config.feqos import merge_reference_with_test
 
 def plot_with_line(df, column):
     # You can add a plot with another line usually a moving average.
@@ -44,27 +45,34 @@ def ema_momentum(df):
         print("Downward momentum")
 
 
-def analyze(symbols_list, hide_graphs):
+def analyze(symbols_list, show_graphs, show_feqos, save_as_reference):
     results_dataframe = pd.DataFrame()
 
     for symbol in symbols_list:
+        print("Calling fetching data")
         df = fetch_latest_data(symbol)
         df = fill_with_ta(df)
-        if not hide_graphs:
+        if show_graphs:
             plot_with_line(df, "sma_20")
             plot_with_line(df, "ema_20")
 
         sma_momentum(df)
         check_crossover(df)
-        bt = Backtest(df, SmaCross, cash=1000, commission=0.002, exclusive_orders=True)
+        bt = Backtest(df, EmaCross, cash=1000, commission=0.002, exclusive_orders=True)
         stats = bt.run()
-        print(f"type(stats {type(stats)}")
+        #print(f"type(stats {type(stats)}")
+        stats['Name'] = symbol
         results_dataframe = results_dataframe._append(stats, ignore_index=True)
-        print(stats)
-        if not hide_graphs:
+        # print(stats)
+        if show_graphs:
             bt.plot()
 
     # results_dataframe = pd.concat(list_of_dfs, ignore_index=True)
     results_dataframe.to_csv("csvs/stats.csv", index=False)
+    if show_feqos:
+        merge_reference_with_test(results_dataframe)
 
-    print(results_dataframe)
+    if save_as_reference:
+        results_dataframe.to_csv("csvs/reference.csv", index=False)
+
+    #print(results_dataframe)
