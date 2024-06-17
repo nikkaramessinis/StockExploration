@@ -6,7 +6,9 @@ stocks:
   - AAPL
   - MSFT
   - GOOG
-hide_graphs: true
+show_graphs: true
+show_feqos: true
+save_reference: false
 strategies:
   - name: technical_analysis
 email_alerts:

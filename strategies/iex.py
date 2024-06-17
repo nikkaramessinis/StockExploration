@@ -1,9 +1,6 @@
 import numpy as np
 import pandas as pd #The Pandas data science library
-import xlsxwriter #The XlsxWriter libarary for
-import math #The Python math module
-from scipy import stats #The SciPy stats module
-from mysecrets import  IEX_CLOUD_API_TOKEN
+from config.secrets import  IEX_CLOUD_API_TOKEN
 import certifi
 from helpers import retrieve_sp500_tickers
 

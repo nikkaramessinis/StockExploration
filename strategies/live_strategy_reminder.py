@@ -3,7 +3,7 @@ import winsound  # For Windows; use pygame for cross-platform support
 from helpers import fetch_latest_data, fill_with_ta, check_crossover
 from helpers import Momentum
 import yagmail
-from mysecrets import GMAIL_PASSWORD, GMAIL_EMAIL_ADDRESS
+from config.secrets import GMAIL_PASSWORD, GMAIL_EMAIL_ADDRESS
 
 
 def send_email(body=""):
