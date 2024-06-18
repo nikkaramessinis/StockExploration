@@ -1,7 +1,6 @@
 import mplfinance as mpf
 import pandas as pd
 from backtesting import Backtest
-from helpers import fetch_latest_data, fill_with_ta, check_crossover
 import mplfinance as mpf
 
 from strategies.backtesting_sma import SmaCross
