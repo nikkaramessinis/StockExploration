@@ -6,7 +6,7 @@ stocks:
   - AAPL
   - MSFT
   - GOOG
-show_graphs: true
+show_graphs: false
 show_feqos: true
 save_reference: false
 strategies:
