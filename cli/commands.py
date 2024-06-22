@@ -32,6 +32,7 @@ def run_strategy(args):
     show_graphs = args.show_graphs
     show_feqos = args.show_feqos
     save_reference = args.save_reference
+    enable_optimizing = args.enable_optimizing
 
 
     if not strategy_name:
@@ -39,7 +40,7 @@ def run_strategy(args):
         return
 
     print(f"Running strategy: {strategy_name}")
-    run_prediction(strategy_name, stocks_list, show_graphs, show_feqos, save_reference)
+    run_prediction(strategy_name, stocks_list, show_graphs, show_feqos, save_reference, enable_optimizing)
 
 
 def email_alerts(args):
