@@ -15,3 +15,4 @@ csvs/*
 
 secrets.py
 config/secrets.py
+colored_*
