@@ -50,6 +50,7 @@ def get_cell_color(val, ref, reverse=False):
     return ""
 
 
+
 def color_all_cells(df_me):
     df_colored = df_me.copy()
     colours = []

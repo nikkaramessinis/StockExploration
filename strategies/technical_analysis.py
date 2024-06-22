@@ -46,7 +46,7 @@ def ema_momentum(df):
         print("Downward momentum")
 
 
-def analyze(symbols_list, show_graphs, show_feqos, save_as_reference):
+def analyze(strategy, symbols_list, show_graphs, show_feqos, save_as_reference, enable_optimizing):
     results_dataframe = pd.DataFrame()
 
     for symbol in symbols_list:
@@ -59,8 +59,15 @@ def analyze(symbols_list, show_graphs, show_feqos, save_as_reference):
 
         sma_momentum(df)
         check_crossover(df)
-        bt = Backtest(df, EmaCross, cash=1000, commission=0.002, exclusive_orders=True)
-        stats = bt.run()
+        bt = Backtest(df, strategy, cash=1000, commission=0.002, exclusive_orders=True)
+        if enable_optimizing:
+            stats = bt.optimize(upper_bound=range(50, 85, 5),
+                                lower_bound=range(10, 45, 5),
+                                rsi_window=range(10, 30, 2),
+                                maximize="Equity Final [$]"
+                                )
+        else:
+            stats = bt.run()
         #print(f"type(stats {type(stats)}")
         stats['Name'] = symbol
         results_dataframe = results_dataframe._append(stats, ignore_index=True)
