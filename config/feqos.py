@@ -127,6 +127,11 @@ def create_colored_html_table(df_me):
 
     df_me = pd.concat([df_me, averages], ignore_index=True)
 
+    # Reorder columns to move source, Name, and _strategy to the left
+    left_columns = ["Name", "source", "_strategy"]
+    other_columns = [col for col in df_me.columns if col not in left_columns]
+    df_me = df_me[left_columns + other_columns]
+
     def apply_colors_to_html(row, colors):
         try:
             return ["background-color: {}".format(color) for color in colors[row.name]]
