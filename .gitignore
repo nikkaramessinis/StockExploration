@@ -16,3 +16,6 @@ csvs/*
 secrets.py
 config/secrets.py
 colored_*
+
+.DS_Store
+*/.DS_Store

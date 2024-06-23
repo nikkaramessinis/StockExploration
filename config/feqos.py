@@ -1,3 +1,6 @@
+import os
+import webbrowser
+
 import pandas as pd
 
 should_reverse_obj = {
@@ -128,7 +131,7 @@ def create_colored_html_table(df_me):
     df_me = pd.concat([df_me, averages], ignore_index=True)
 
     # Reorder columns to move source, Name, and _strategy to the left
-    left_columns = ["Name", "source", "_strategy"]
+    left_columns = ["source", "Name", "_strategy"]
     other_columns = [col for col in df_me.columns if col not in left_columns]
     df_me = df_me[left_columns + other_columns]
 
@@ -140,11 +143,19 @@ def create_colored_html_table(df_me):
 
     styled_df = df_me.style.apply(apply_colors_to_html, colors=colors, axis=1)
 
-    html_table = styled_df._repr_html_()
-    with open("colored_table.html", "w") as f:
+    # Hide the index when generating the HTML
+    styled_df = styled_df.hide(axis="index")
+
+    html_table = styled_df.to_html()
+
+    # Get the absolute path for the HTML file
+    html_path = os.path.abspath("colored_table.html")
+
+    with open(html_path, "w") as f:
         f.write(html_table)
 
-    print("HTML table created and saved as 'colored_table.html'.")
+    print(f"HTML table created and saved as '{html_path}'.")
+    return html_path
 
 
 def merge_reference_with_test(df_test):
@@ -158,4 +169,6 @@ def merge_reference_with_test(df_test):
     df_me.drop(["_equity_curve", "Start", "End", "Duration"], axis=1, inplace=True)
     df_me.to_csv("csvs/df_merged.csv")
 
-    create_colored_html_table(df_me)
+    html_file = create_colored_html_table(df_me)
+    # Open the HTML file in the default web browser
+    webbrowser.open("file://" + html_file)
