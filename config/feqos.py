@@ -106,8 +106,8 @@ def calculate_average(df):
                 mean = values.mean()
                 source_avg[col] = mean if pd.notna(mean) else "N/A"
 
-        source_avg["source"] = f"Average ({source_value})"
-        source_avg["Name"] = f"Average {source_value}"
+        source_avg["source"] = f"{source_value}"
+        source_avg["Name"] = f"Average"
         source_avg["_strategy"] = ""
 
         averages.append(source_avg)
@@ -121,7 +121,6 @@ def create_colored_html_table(df_me, graphs):
     ]
     df_me = df_me.drop(columns=cols_to_drop)
 
-    colors = color_all_cells(df_me)
     averages = calculate_average(df_me)
 
     # Ensure averages DataFrame has the same columns as df_me
@@ -133,6 +132,7 @@ def create_colored_html_table(df_me, graphs):
     averages = averages[df_me.columns]
 
     df_me = pd.concat([df_me, averages], ignore_index=True)
+    colors = color_all_cells(df_me)
 
     # Reorder columns to move source, Name, and _strategy to the left
     left_columns = ["source", "Name", "_strategy"]
