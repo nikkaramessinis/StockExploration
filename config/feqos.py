@@ -67,7 +67,7 @@ def color_all_cells(df_me):
                     cell_value = row[col]
                     color = get_cell_color(
                         cell_value,
-                        filtered_row[col].iloc[0],
+                        filtered_row[col].iloc[0] if not filtered_row.empty else None,
                         should_reverse_obj[col],
                     )
                     inner_colors[df_colored.columns.get_loc(col)] = color
@@ -76,18 +76,62 @@ def color_all_cells(df_me):
     return colours
 
 
+def calculate_average(df):
+    averages = []
+
+    for source_value in df["source"].unique():
+        source_df = df[df["source"] == source_value]
+        source_avg = {}
+
+        for col in df.columns:
+            if col in ["_strategy", "Name", "source"]:
+                continue  # Skip these columns for averaging
+
+            values = source_df[col].replace("nan", pd.NA)
+
+            if values.dtype == "object":
+                # For non-numeric columns, use mode if possible, otherwise 'N/A'
+                mode = values.mode()
+                source_avg[col] = mode.iloc[0] if not mode.empty else "N/A"
+            else:
+                # For numeric columns, calculate mean, ignoring NAs
+                mean = values.mean()
+                source_avg[col] = mean if pd.notna(mean) else "N/A"
+
+        source_avg["source"] = f"Average ({source_value})"
+        source_avg["Name"] = f"Average {source_value}"
+        source_avg["_strategy"] = ""
+
+        averages.append(source_avg)
+
+    return pd.DataFrame(averages)
+
+
 def create_colored_html_table(df_me):
-    # Drop columns marked as "DROP"
     cols_to_drop = [
         col for col, action in should_reverse_obj.items() if action == "DROP"
     ]
-
     df_me = df_me.drop(columns=cols_to_drop)
 
     colors = color_all_cells(df_me)
 
+    averages = calculate_average(df_me)
+
+    # Ensure averages DataFrame has the same columns as df_me
+    for col in df_me.columns:
+        if col not in averages.columns:
+            averages[col] = pd.NA
+
+    # Reorder columns in averages to match df_me
+    averages = averages[df_me.columns]
+
+    df_me = pd.concat([df_me, averages], ignore_index=True)
+
     def apply_colors_to_html(row, colors):
-        return ["background-color: {}".format(color) for color in colors[row.name]]
+        try:
+            return ["background-color: {}".format(color) for color in colors[row.name]]
+        except IndexError:
+            return [""] * len(row)
 
     styled_df = df_me.style.apply(apply_colors_to_html, colors=colors, axis=1)
 
@@ -110,8 +154,3 @@ def merge_reference_with_test(df_test):
     df_me.to_csv("csvs/df_merged.csv")
 
     create_colored_html_table(df_me)
-
-
-# Example usage
-# df_test = pd.read_csv('csvs/test.csv')
-# merge_reference_with_test(df_test)
