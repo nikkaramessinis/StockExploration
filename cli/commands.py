@@ -31,13 +31,16 @@ def run_strategy(args):
     stocks_list = args.stocks_list
     display_dashboard = args.display_dashboard
     save_reference = args.save_reference
+    enable_optimizing = args.enable_optimizing
 
     if not strategy_name:
         print("Strategy name is required.")
         return
 
     print(f"Running strategy: {strategy_name}")
-    run_prediction(strategy_name, stocks_list, display_dashboard, save_reference)
+    run_prediction(
+        strategy_name, stocks_list, display_dashboard, save_reference, enable_optimizing
+    )
 
 
 def email_alerts(args):

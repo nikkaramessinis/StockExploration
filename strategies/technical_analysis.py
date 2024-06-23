@@ -6,7 +6,9 @@ from strategies.backtesting_ema import EmaCross
 from utils.helpers import check_crossover, fetch_latest_data, fill_with_ta
 
 
-def analyze(symbols_list, display_dashboard, save_as_reference):
+def analyze(
+    strategy, symbols_list, display_dashboard, save_as_reference, enable_optimizing
+):
     results_dataframe = pd.DataFrame()
     symbol_data = {}
 
@@ -16,8 +18,17 @@ def analyze(symbols_list, display_dashboard, save_as_reference):
         df = fill_with_ta(df)
 
         check_crossover(df)
-        bt = Backtest(df, EmaCross, cash=1000, commission=0.002, exclusive_orders=True)
-        stats = bt.run()
+        bt = Backtest(df, strategy, cash=1000, commission=0.002, exclusive_orders=True)
+        if enable_optimizing:
+            stats = bt.optimize(
+                upper_bound=range(50, 85, 5),
+                lower_bound=range(10, 45, 5),
+                rsi_window=range(10, 30, 2),
+                maximize="Equity Final [$]",
+            )
+        else:
+            stats = bt.run()
+        # print(f"type(stats {type(stats)}")
         stats["Name"] = symbol
         results_dataframe = results_dataframe._append(stats, ignore_index=True)
 

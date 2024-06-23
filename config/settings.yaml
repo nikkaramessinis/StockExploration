@@ -8,8 +8,8 @@ stocks:
   - GOOG
 display_dashboard: true
 save_reference: false
-strategies:
-  - name: technical_analysis
+strategies: RSI
+enable_optimizing: true
 email_alerts:
   enabled: true
   recipients:

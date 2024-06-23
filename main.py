@@ -23,17 +23,15 @@ def main():
         elif command == "run_strategy":
             from cli.commands import run_strategy
 
-            strategies = config.get("strategies", [])
-            for strategy_config in strategies:
+            class Args:
+                strategy = config.get("strategies")
+                stocks_list = config.get("stocks", [])
+                show_graphs = config.get("show_graphs", False)
+                display_dashboard = config.get("display_dashboard", False)
+                save_reference = config.get("save_reference", False)
+                enable_optimizing = config.get("enable_optimizing", "RSI")
 
-                class Args:
-                    strategy = strategy_config["name"]
-                    stocks_list = config.get("stocks", [])
-                    show_graphs = config.get("show_graphs", False)
-                    display_dashboard = config.get("display_dashboard", False)
-                    save_reference = config.get("save_reference", False)
-
-                run_strategy(Args)
+            run_strategy(Args)
         elif command == "schedule_email":
             from cli.commands import email_alerts
 
