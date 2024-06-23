@@ -4,6 +4,7 @@ import warnings
 warnings.filterwarnings("ignore", category=FutureWarning, module="backtesting")
 
 import json
+
 from config.config import load_config
 
 
@@ -22,15 +23,13 @@ def main():
         elif command == "run_strategy":
             from cli.commands import run_strategy
 
-
             class Args:
                 strategy = config.get("strategies")
                 stocks_list = config.get("stocks", [])
                 show_graphs = config.get("show_graphs", False)
-                show_feqos = config.get("show_feqos", False)
+                display_dashboard = config.get("display_dashboard", False)
                 save_reference = config.get("save_reference", False)
                 enable_optimizing = config.get("enable_optimizing", "RSI")
-
 
             run_strategy(Args)
         elif command == "schedule_email":

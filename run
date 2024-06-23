@@ -23,7 +23,7 @@ def main():
     )
     parser.add_argument(
         "-hg",
-        "--show_feqos",
+        "--display_dashboard",
         action="store_true",
         help="Hide graphs (optional, defaults to False)",
     )
@@ -32,13 +32,12 @@ def main():
 
     symbols = args.symbol
     strategy = args.strategy
-    show_graphs = args.show_graphs
-    show_feqos = args.show_feqos
+    display_dashboard = args.display_dashboard
 
     if not strategy:
         strategy = config.DEFAULT_STRATEGY
 
-    technical_analysis.analyze(symbols, strategy, show_graphs, show_feqos)
+    technical_analysis.analyze(symbols, strategy, display_dashboard)
 
 
 if __name__ == "__main__":
