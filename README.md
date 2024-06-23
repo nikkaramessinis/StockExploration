@@ -50,7 +50,7 @@ stocks:                     # list of stocks to use
   - AAPL
   - MSFT
   - GOOG
-hide_graphs: true           # hide graphs by default
+display_dashboard: true           # display all the graphs and tables in html format
 strategies:                 # list of strategies to run (in order)
   - name: technical_analysis
 email_alerts:
