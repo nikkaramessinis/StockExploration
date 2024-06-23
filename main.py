@@ -30,7 +30,7 @@ def main():
                     strategy = strategy_config["name"]
                     stocks_list = config.get("stocks", [])
                     show_graphs = config.get("show_graphs", False)
-                    show_feqos = config.get("show_feqos", False)
+                    display_dashboard = config.get("display_dashboard", False)
                     save_reference = config.get("save_reference", False)
 
                 run_strategy(Args)

@@ -1,7 +1,14 @@
+import base64
 import os
 import webbrowser
+from io import BytesIO
 
+import matplotlib.pyplot as plt
+import mplfinance as mpf
 import pandas as pd
+
+# Assuming these functions are imported from other modules
+from utils.helpers import fetch_latest_data, fill_with_ta
 
 should_reverse_obj = {
     "Exposure Time [%]": True,
@@ -38,13 +45,12 @@ def get_cell_color(val, ref, reverse=False):
     positive_color = "green"
     negative_color = "red"
     if reverse:
-        positive_color = "red"
-        negative_color = "green"
+        positive_color, negative_color = negative_color, positive_color
 
     if (
         isinstance(val, float)
         and not isinstance(val, pd.Timestamp)
-        and (isinstance(val, float) and not isinstance(ref, str))
+        and isinstance(ref, (int, float))
     ):
         if val > ref:
             return positive_color
@@ -88,16 +94,14 @@ def calculate_average(df):
 
         for col in df.columns:
             if col in ["_strategy", "Name", "source"]:
-                continue  # Skip these columns for averaging
+                continue
 
             values = source_df[col].replace("nan", pd.NA)
 
             if values.dtype == "object":
-                # For non-numeric columns, use mode if possible, otherwise 'N/A'
                 mode = values.mode()
                 source_avg[col] = mode.iloc[0] if not mode.empty else "N/A"
             else:
-                # For numeric columns, calculate mean, ignoring NAs
                 mean = values.mean()
                 source_avg[col] = mean if pd.notna(mean) else "N/A"
 
@@ -110,14 +114,13 @@ def calculate_average(df):
     return pd.DataFrame(averages)
 
 
-def create_colored_html_table(df_me):
+def create_colored_html_table(df_me, graphs):
     cols_to_drop = [
         col for col, action in should_reverse_obj.items() if action == "DROP"
     ]
     df_me = df_me.drop(columns=cols_to_drop)
 
     colors = color_all_cells(df_me)
-
     averages = calculate_average(df_me)
 
     # Ensure averages DataFrame has the same columns as df_me
@@ -142,23 +145,70 @@ def create_colored_html_table(df_me):
             return [""] * len(row)
 
     styled_df = df_me.style.apply(apply_colors_to_html, colors=colors, axis=1)
-
-    # Hide the index when generating the HTML
     styled_df = styled_df.hide(axis="index")
-
     html_table = styled_df.to_html()
 
+    # Create the complete HTML content
+    html_content = f"""
+    <html>
+    <head>
+        <style>
+            table {{ border-collapse: collapse; width: 100%; }}
+            th, td {{ border: 1px solid black; padding: 8px; text-align: left; }}
+            img {{ max-width: 100%; height: auto; }}
+        </style>
+    </head>
+    <body>
+        <h2>Results Table</h2>
+        {html_table}
+        <h2>Graphs</h2>
+        {''.join(graphs)}
+    </body>
+    </html>
+    """
+
     # Get the absolute path for the HTML file
-    html_path = os.path.abspath("colored_table.html")
+    html_path = os.path.abspath("colored_table_with_graphs.html")
 
     with open(html_path, "w") as f:
-        f.write(html_table)
+        f.write(html_content)
 
-    print(f"HTML table created and saved as '{html_path}'.")
+    print(f"HTML file with table and graphs created and saved as '{html_path}'.")
     return html_path
 
 
-def merge_reference_with_test(df_test):
+def plot_with_line(df, column):
+    # Ensure the index is a DatetimeIndex
+    df.index = pd.to_datetime(df.index)
+
+    # Prepare the plot
+    additional_plots = [mpf.make_addplot(df[column], color="orange", width=1)]
+
+    # Create a BytesIO object to save the plot
+    buf = BytesIO()
+
+    # Plot using mplfinance
+    mpf.plot(
+        df,
+        type="candle",
+        style="charles",
+        title=f"Candlestick Chart with {column}",
+        ylabel="Price",
+        ylabel_lower="Shares Traded",
+        addplot=additional_plots,
+        savefig=buf,
+        figsize=(10, 6),
+        show_nontrading=False,
+    )
+
+    # Convert plot to base64 string
+    buf.seek(0)
+    graph_url = base64.b64encode(buf.getvalue()).decode()
+
+    return f'<img src="data:image/png;base64,{graph_url}">'
+
+
+def merge_reference_with_test(df_test, symbol_data):
     df_reference = pd.read_csv("csvs/reference.csv")
     df_reference["source"] = "Reference"
     df_test["source"] = "Test"
@@ -169,6 +219,20 @@ def merge_reference_with_test(df_test):
     df_me.drop(["_equity_curve", "Start", "End", "Duration"], axis=1, inplace=True)
     df_me.to_csv("csvs/df_merged.csv")
 
-    html_file = create_colored_html_table(df_me)
+    # Generate graphs
+    graphs = []
+    for symbol, df_data in symbol_data.items():
+        sma_graph = plot_with_line(df_data, "sma_20")
+        ema_graph = plot_with_line(df_data, "ema_20")
+        graphs.extend(
+            [
+                f"<h3>{symbol} - SMA 20</h3>",
+                sma_graph,
+                f"<h3>{symbol} - EMA 20</h3>",
+                ema_graph,
+            ]
+        )
+
+    html_file = create_colored_html_table(df_me, graphs)
     # Open the HTML file in the default web browser
     webbrowser.open("file://" + html_file)

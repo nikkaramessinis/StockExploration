@@ -29,17 +29,15 @@ def fetch_stocks(args):
 def run_strategy(args):
     strategy_name = args.strategy
     stocks_list = args.stocks_list
-    show_graphs = args.show_graphs
-    show_feqos = args.show_feqos
+    display_dashboard = args.display_dashboard
     save_reference = args.save_reference
-
 
     if not strategy_name:
         print("Strategy name is required.")
         return
 
     print(f"Running strategy: {strategy_name}")
-    run_prediction(strategy_name, stocks_list, show_graphs, show_feqos, save_reference)
+    run_prediction(strategy_name, stocks_list, display_dashboard, save_reference)
 
 
 def email_alerts(args):
