@@ -3,8 +3,7 @@ from backtesting import Backtest
 
 
 def optimize(strategy, symbols_list):
-    upper_bounds, lower_bounds, rsi_window = 0, 0, 0
-
+    upper_bounds, lower_bounds, rsi_windows = 0, 0, 0
     for symbol in symbols_list:
         print("Calling fetching data")
         df = fetch_latest_data(symbol)
@@ -18,14 +17,17 @@ def optimize(strategy, symbols_list):
                             constraint= lambda param: param.upper_bound > param.lower_bound,
                             return_heatmap = True
                             )
-        best_params = optiheatmap.idxmax()
-        upper_bound = best_params[0]
-        lower_bound = best_params[1]
-        rsi_window = best_params[2]
+        best_params = optiheatmap.idxmax(skipna=True)
+        upper_bound, lower_bound, rsi_window = 70, 30, 15
+        if isinstance(best_params, tuple):
+            upper_bound = best_params[0]
+            lower_bound = best_params[1]
+            rsi_window = best_params[2]
         upper_bounds += upper_bound
-        lower_bound +=lower_bounds
-        rsi_window += rsi_window
+        lower_bounds += lower_bound
+        rsi_windows += rsi_window
         stats['Name'] = symbol
-    upper_bound = upper_bounds/len(symbols_list)
-    lower_bound = lower_bounds/len(symbols_list)
-    rsi_window = rsi_window/len(symbols_list)
+    upper_bound = upper_bounds//len(symbols_list)
+    lower_bound = lower_bounds//len(symbols_list)
+    rsi_window = rsi_window//len(symbols_list)
+    return {"upper_bound":upper_bound, "lower_bound":lower_bound, "rsi_window":rsi_window}
