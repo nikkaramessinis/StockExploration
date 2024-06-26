@@ -6,8 +6,12 @@ stocks:
   - AAPL
   - MSFT
   - GOOG
+  - QCOM
+  - AMD
+  - AVGO
+  - NVDA
 display_dashboard: true
-save_reference: false
+save_reference: true
 strategies: RSI
 enable_optimizing: true
 email_alerts:
