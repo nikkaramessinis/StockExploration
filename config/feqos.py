@@ -132,12 +132,13 @@ def create_colored_html_table(df_me, graphs):
     averages = averages[df_me.columns]
 
     df_me = pd.concat([df_me, averages], ignore_index=True)
-    colors = color_all_cells(df_me)
 
     # Reorder columns to move source, Name, and _strategy to the left
     left_columns = ["source", "Name", "_strategy"]
     other_columns = [col for col in df_me.columns if col not in left_columns]
     df_me = df_me[left_columns + other_columns]
+    # if you color and then re-order columns then we have a bug
+    colors = color_all_cells(df_me)
 
     def apply_colors_to_html(row, colors):
         try:
