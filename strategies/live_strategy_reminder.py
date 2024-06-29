@@ -1,7 +1,7 @@
 import yagmail
 from config.secrets import GMAIL_PASSWORD, GMAIL_ADDRESS
 from sys import platform
-from utils.helpers import fetch_latest_data, fill_with_ta, check_crossover, Momentum
+from utils.helpers import fetch_latest_data, fill_with_ta, check_crossover, Momentum, save_to_json
 from backtesting import Backtest
 from strategies.backtesting_rsi import RSIOscillatorCross
 import time
@@ -42,5 +42,14 @@ def live_strategy(strategy_name, stocks_list):
                 print(body)
                 send_alert(body)
                 previous[stock] = signal
+
+                # Store data into JSON file
+                data_to_store = {
+                    "stock": stock,
+                    "signal": signal,
+                    "timestamp": time.strftime("%Y-%m-%d %H:%M:%S")
+                }
+                filename = f"{stock}_momentum.json"
+                save_to_json(data_to_store, filename)
 
         time.sleep(60)  # Sleep for 1 minute

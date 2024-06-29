@@ -4,7 +4,7 @@ from datetime import date
 import yfinance as yf
 import talib as ta
 from enum import Enum
-
+import json
 
 class Momentum(Enum):
     UPWARD = "upward"
@@ -60,3 +60,7 @@ def retrieve_sp500_tickers() -> list[str]:
     # Remove newline characters
     sp500_symbols = [s.replace("\n", "") for s in tickers]
     return sp500_symbols
+
+def save_to_json(data, filename):
+    with open(filename, 'w') as f:
+        json.dump(data, f, indent=4)
