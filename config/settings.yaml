@@ -1,6 +1,6 @@
-run_commands:
-  - fetch_stocks
-  - run_strategy
+strategy_flow:
+  # - optimization
+  - live
   # - email_alerts
 stocks:
   - AAPL

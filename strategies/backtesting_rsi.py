@@ -15,6 +15,8 @@ class RSIOscilatorCross(Strategy):
     def next(self):
         # Compare the values
         if crossover(self.rsi, self.upper_bound):
+            print("change in momentum - sell")
             self.position.close()
         elif crossover(self.lower_bound, self.rsi):
+            print("change in momentum - buy")
             self.buy()
