@@ -36,5 +36,5 @@ def analyze(
         merge_reference_with_test(results_dataframe, symbol_data)
 
     if save_as_reference:
-        results_dataframe.to_csv("csvs/reference.csv", index=False)
+        results_dataframe.to_csv("reference.csv", index=False)
     return results_dataframe, symbol_data

@@ -211,7 +211,7 @@ def plot_with_line(df, column):
 
 
 def merge_reference_with_test(df_test, symbol_data):
-    df_reference = pd.read_csv("csvs/reference.csv")
+    df_reference = pd.read_csv("reference.csv")
     df_reference["source"] = "Reference"
     df_test["source"] = "Test"
 
