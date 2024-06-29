@@ -1,5 +1,5 @@
 from strategies.backtesting_ema import EmaCross
-from strategies.backtesting_rsi import RSIOscilatorCross
+from strategies.backtesting_rsi import RSIOscillatorCross
 from strategies.backtesting_sma import SmaCross
 from strategies.backtesting_bollinger_bands import BBandsCross
 from strategies.technical_analysis import analyze
@@ -11,7 +11,7 @@ def run_prediction(
     strategies = {
         "SMA": SmaCross,
         "EMA": EmaCross,
-        "RSI": RSIOscilatorCross,
+        "RSI": RSIOscillatorCross,
         "BBands": BBandsCross,
         # Add other strategies here
     }
