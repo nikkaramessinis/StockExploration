@@ -17,6 +17,7 @@ def analyze(
 
         check_crossover(df)
         bt = Backtest(df, strategy, cash=1000, commission=0.002, exclusive_orders=True)
+
         stats = bt.optimize(upper_bound=range(args["upper_bound"], args["upper_bound"]+1, 5),
                             lower_bound=range(args["lower_bound"], args["lower_bound"]+1, 5),
                             rsi_window=range(args["rsi_window"], args["rsi_window"]+1, 2),
