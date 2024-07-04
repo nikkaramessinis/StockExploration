@@ -1,41 +1,43 @@
-import requests #The requests library for HTTP requests in Python
-import bs4 as bs
 from datetime import date
-import yfinance as yf
-import talib as ta
 from enum import Enum
+
+import bs4 as bs
+import requests  # The requests library for HTTP requests in Python
+import talib as ta
+import yfinance as yf
 
 
 class Momentum(Enum):
     UPWARD = "upward"
     DOWNWARD = "downward"
 
-def fill_with_ta(df, write_to_csv = False):
-    df['engulfing'] = ta.CDLENGULFING(df['Open'], df['High'], df['Low'], df['Close'])
-    df['rsi'] = ta.RSI(df['Close'], timeperiod=14)
-    df['sma_20'] = ta.SMA(df['Close'], 15)
-    df['ema_20'] = ta.EMA(df['Close'], 20)
+
+def fill_with_ta(df, write_to_csv=False):
+    df["engulfing"] = ta.CDLENGULFING(df["Open"], df["High"], df["Low"], df["Close"])
+    df["rsi"] = ta.RSI(df["Close"], timeperiod=14)
+    df["sma_20"] = ta.SMA(df["Close"], 15)
+    df["ema_20"] = ta.EMA(df["Close"], 20)
     if write_to_csv:
         df.to_csv("csvs/arm.csv", index=False)
     return df
 
 
-
 def check_crossover(df):
     # Extract the closing price and SMA at the last moment
     last_row = df.iloc[-1]
-    closing_price_last = last_row['Close']
-    ema_last = last_row['ema_20']
+    closing_price_last = last_row["Close"]
+    ema_last = last_row["ema_20"]
     # Compare the values
     if closing_price_last > ema_last:
         return Momentum.UPWARD
     else:
         return Momentum.UPWARD
 
-def fetch_latest_data(symbols_list, start_date='2023-09-27'):
-    end_date = date.today()
-    #end_date = '2024-05-31'
-    #df = yf.download(tickers=symbols_list, start=start_date, end=str(end_date), auto_adjust=True)
+
+def fetch_latest_data(symbols_list, start_date="2023-09-27"):
+    # end_date = date.today()
+    end_date = "2024-06-30"
+    # df = yf.download(tickers=symbols_list, start=start_date, end=str(end_date), auto_adjust=True)
     ticker_yahoo = yf.Ticker(symbols_list)
     df = ticker_yahoo.history(start=start_date, end=str(end_date), auto_adjust=True)
     return df
