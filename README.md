@@ -17,13 +17,6 @@ pip install TA_Lib-0.4.29-cp310-cp310-win_amd64.whl
 pip3 install -r requirements.txt -U;
 ```
 
-## From Nick:
-In order to make this work you need a secrets.py 
-and out your api key IEX_CLOUD_API_TOKEN = "" from https://iexcloud.io/ 
-.Sign in there and copy the api_token there
-
-undervalued calculator is the main python file to run
-
 ## How to start the app
 
 To run the app, you can use the following command:
