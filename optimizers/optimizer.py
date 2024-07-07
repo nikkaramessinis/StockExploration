@@ -1,3 +1,5 @@
+import multiprocessing
+import warnings
 from collections import defaultdict
 from typing import Any, Callable, Dict, Optional, Tuple, Union
 
@@ -5,6 +7,16 @@ from backtesting import Backtest
 
 from strategies.backtesting_rsi import RSIOscillatorCross
 from utils.helpers import fetch_latest_data, fill_with_ta
+
+# Suppress the warning about searching for best configurations
+warnings.filterwarnings("ignore", message="Searching for best of*")
+
+# Set multiprocessing start method to 'fork' on Unix-based systems
+if hasattr(multiprocessing, "set_start_method"):
+    try:
+        multiprocessing.set_start_method("fork")
+    except RuntimeError:
+        pass  # method already set
 
 
 class Optimizer:
