@@ -1,5 +1,4 @@
 import talib as ta
-from backtesting import Strategy
 from backtesting.lib import crossover
 
 
