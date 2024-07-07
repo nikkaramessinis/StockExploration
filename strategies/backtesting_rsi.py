@@ -1,5 +1,7 @@
-from backtesting.lib import crossover
 import talib as ta
+from backtesting import Strategy
+from backtesting.lib import crossover
+
 
 class RSIOscillatorCross:
     def __init__(self, upper_bound=70, lower_bound=30, rsi_window=14):
