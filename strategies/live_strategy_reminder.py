@@ -1,36 +1,55 @@
 import time
-import winsound  # For Windows; use pygame for cross-platform support
-from helpers import fetch_latest_data, fill_with_ta, check_crossover
-from helpers import Momentum
+from sys import platform
+
 import yagmail
-from config.secrets import GMAIL_PASSWORD, GMAIL_EMAIL_ADDRESS
+from backtesting import Backtest
+
+from config.secrets import GMAIL_ADDRESS, GMAIL_PASSWORD
+from strategies.backtesting_rsi import RSIOscillatorCross
+from utils.helpers import fetch_latest_data, fill_with_ta
 
 
-def send_email(body=""):
-    yag = yagmail.SMTP(GMAIL_EMAIL_ADDRESS, GMAIL_PASSWORD)
-    subject = 'Hello from Yagmail!'
-    yag.send(GMAIL_EMAIL_ADDRESS, subject, body)
+def send_alert(body=""):
+    if platform == "win32":
+        import winsound
+
+        winsound.Beep(1000, 500)
+
+    if GMAIL_ADDRESS == "" or GMAIL_PASSWORD == "":
+        return
+
+    yag = yagmail.SMTP(GMAIL_ADDRESS, GMAIL_PASSWORD)
+    subject = "Trading Alert"
+    yag.send(GMAIL_ADDRESS, subject, body)
 
 
-def main():
-    previous = Momentum.DOWNWARD
+def live_strategy(strategy_name, stocks_list):
+    strategies = {
+        "RSI": RSIOscillatorCross,
+        # Add other strategies here
+    }
+
+    if strategy_name not in strategies:
+        print(f"Strategy {strategy_name} not found.")
+        return
+
+    previous = {stock: None for stock in stocks_list}
+    strategy_class = strategies[strategy_name]
+
     while True:
-        symbols_list = ['ARM']
-        df = fetch_latest_data(symbols_list)
-        sma_value = fill_with_ta(df)  # Adjust with your data
-        crossover_status = check_crossover(df)
+        for stock in stocks_list:
+            df = fetch_latest_data(stock)
+            df = fill_with_ta(df)  # Make sure to add technical indicators
 
-        if crossover_status != previous:
-            # Trigger the beep sound (implement this part)
+            # Use the class method to generate the signal
+            # We're passing the last two rows to allow for crossover calculation
+            signal = strategy_class.generate_signal(df.iloc[-2:])
 
-            body = (f"Momentum has swifted! We now have an {crossover_status} momentum for {symbols_list[0]}")
-            print(body)
-            send_email(body)
-            previous = crossover_status
-            winsound.Beep(1000, 500)  # Example beep sound
+            print(f"Checking signal for {stock}... Signal: {signal}")
+            if signal and signal != previous[stock]:
+                body = f"New signal for {stock}: {signal}"
+                print(body)
+                send_alert(body)
+                previous[stock] = signal
 
         time.sleep(60)  # Sleep for 1 minute
-
-
-if __name__ == "__main__":
-    main()

@@ -6,7 +6,7 @@ import pandas as pd
 from core.data_fetching import fetch_stock_data
 from core.email_alert import schedule_email_alert
 from core.prediction_strategy import run_prediction
-
+from strategies.live_strategy_reminder import live_strategy
 
 def fetch_stocks(args):
     stocks = args.stocks
@@ -27,6 +27,7 @@ def fetch_stocks(args):
 
 
 def run_strategy(args):
+    flow_name = args.flow_name
     strategy_name = args.strategy
     stocks_list = args.stocks_list
     display_dashboard = args.display_dashboard
@@ -37,10 +38,17 @@ def run_strategy(args):
         print("Strategy name is required.")
         return
 
-    print(f"Running strategy: {strategy_name}")
-    run_prediction(
-        strategy_name, stocks_list, display_dashboard, save_reference, enable_optimizing
-    )
+    print(f"Running strategy: {strategy_name} with flow {flow_name}")
+
+    if flow_name == "optimization":
+        run_prediction(
+            strategy_name, stocks_list, display_dashboard, save_reference, enable_optimizing
+        )
+    elif flow_name == "live":
+        live_strategy(strategy_name, stocks_list)
+    else:
+        print(f"Unknown strategy: {flow_name}")
+        return
 
 
 def email_alerts(args):

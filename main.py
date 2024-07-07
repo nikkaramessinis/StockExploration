@@ -10,20 +10,19 @@ from config.config import load_config
 
 def main():
     config = load_config()
-    commands = config.get("run_commands", [])
+    flow_list = config.get("strategy_flow", [])
 
-    for command in commands:
-        if command == "fetch_stocks":
-            from cli.commands import fetch_stocks
+    for flow in flow_list:
+        from cli.commands import fetch_stocks
+        class Args:
+            stocks = config.get("stocks", [])
 
-            class Args:
-                stocks = config.get("stocks", [])
-
-            fetch_stocks(Args)
-        elif command == "run_strategy":
+        fetch_stocks(Args)
+        if flow == "optimization" or flow == "live":
             from cli.commands import run_strategy
 
             class Args:
+                flow_name = flow
                 strategy = config.get("strategies")
                 stocks_list = config.get("stocks", [])
                 show_graphs = config.get("show_graphs", False)
@@ -32,7 +31,8 @@ def main():
                 enable_optimizing = config.get("enable_optimizing", "RSI")
 
             run_strategy(Args)
-        elif command == "schedule_email":
+
+        elif flow == "schedule_email":
             from cli.commands import email_alerts
 
             email_config = config.get("email_alerts", {})
@@ -42,7 +42,7 @@ def main():
 
             email_alerts(Args)
         else:
-            print(f"Unknown command: {command}")
+            print(f"Unknown flow: {flow}")
 
 import os
 
