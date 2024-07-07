@@ -1,6 +1,6 @@
-run_commands:
-  - fetch_stocks
-  - run_strategy
+strategy_flow:
+  # - optimization
+  - live
   # - email_alerts
 stocks:
   - AAPL
@@ -11,7 +11,7 @@ stocks:
   - AVGO
   - NVDA
 display_dashboard: true
-save_reference: false
+save_reference: true
 strategies: RSI
 enable_optimizing: true
 email_alerts:
