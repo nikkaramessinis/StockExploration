@@ -1,6 +1,6 @@
 strategy_flow:
-  # - optimization
-  - live
+  - optimization
+  # - live
   # - email_alerts
 stocks:
   - AAPL
