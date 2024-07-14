@@ -15,8 +15,9 @@ warnings.filterwarnings("ignore", message="Searching for best of*")
 if hasattr(multiprocessing, "set_start_method"):
     try:
         multiprocessing.set_start_method("fork")
-    except RuntimeError:
+    except:
         pass  # method already set
+
 
 
 class Optimizer:
@@ -53,11 +54,6 @@ class Optimizer:
             bt = Backtest(
                 df, self.strategy, cash=1000, commission=0.002, exclusive_orders=True
             )
-
-            # Set initial parameter values
-            bt._strategy.upper_bound = param_ranges["upper_bound"].start
-            bt._strategy.lower_bound = param_ranges["lower_bound"].start
-            bt._strategy.rsi_window = param_ranges["rsi_window"].start
 
             stats, optiheatmap = self.optimize_strategy(
                 bt, param_ranges, constraint_func

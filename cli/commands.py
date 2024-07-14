@@ -7,6 +7,23 @@ from core.data_fetching import fetch_stock_data
 from core.email_alert import schedule_email_alert
 from core.prediction_strategy import run_prediction
 from strategies.live_strategy_reminder import live_strategy
+from strategies.backtesting_bollinger_bands import BBandsCross
+from strategies.backtesting_ema import EmaCross
+from strategies.backtesting_grip import GridCross
+from strategies.backtesting_mix import MixCross
+from strategies.backtesting_rsi import RSIOscillatorCross
+from strategies.backtesting_sma import SmaCross
+
+
+strategies = {
+    "SMA": SmaCross,
+    "EMA": EmaCross,
+    "RSI": RSIOscillatorCross,
+    "BBands": BBandsCross,
+    # Add other strategies here
+}
+
+
 
 def fetch_stocks(args):
     stocks = args.stocks
@@ -38,14 +55,17 @@ def run_strategy(args):
         print("Strategy name is required.")
         return
 
-    print(f"Running strategy: {strategy_name} with flow {flow_name}")
+    if strategy_name in strategies:
+        strategy = strategies[strategy_name]
 
-    if flow_name == "optimization":
-        run_prediction(
-            strategy_name, stocks_list, display_dashboard, save_reference, enable_optimizing
-        )
-    elif flow_name == "live":
-        live_strategy(strategy_name, stocks_list)
+        print(f"Running strategy: {strategy_name} with flow {flow_name}")
+
+        if flow_name == "optimization":
+            run_prediction(
+                strategy, strategy_name, stocks_list, display_dashboard, save_reference, enable_optimizing
+            )
+        elif flow_name == "live":
+            live_strategy(strategy, stocks_list)
     else:
         print(f"Unknown strategy: {flow_name}")
         return

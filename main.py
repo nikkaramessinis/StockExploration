@@ -14,6 +14,7 @@ def main():
 
     for flow in flow_list:
         from cli.commands import fetch_stocks
+
         class Args:
             stocks = config.get("stocks", [])
 
@@ -44,7 +45,9 @@ def main():
         else:
             print(f"Unknown flow: {flow}")
 
+
 import os
+
 
 def generate_secrets_file():
     secrets_file = os.path.join("config", "secrets.py")
@@ -67,8 +70,9 @@ def generate_secrets_file():
         print(f"Error writing to {secrets_file}: {e}")
         return False
 
+
 if __name__ == "__main__":
     # auto generate secrets.py if it doesn't exist
     generate_secrets_file()
-    
+
     main()

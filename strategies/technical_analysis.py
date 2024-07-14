@@ -4,8 +4,8 @@ from backtesting import Backtest
 from config.feqos import merge_reference_with_test
 from utils.helpers import check_crossover, fetch_latest_data, fill_with_ta
 
-
 def analyze(strategy, symbols_list, display_dashboard, save_as_reference, param_ranges):
+
     results_dataframe = pd.DataFrame()
     symbol_data = {}
 
