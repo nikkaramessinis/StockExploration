@@ -30,7 +30,7 @@ def live_strategy(strategy, stocks_list):
 
     while True:
         for stock in stocks_list:
-            df = fetch_latest_data(stock)
+            df = fetch_latest_data(stock, True)
             df = fill_with_ta(df)  # Make sure to add technical indicators
 
             # Use the class method to generate the signal

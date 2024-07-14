@@ -7,9 +7,6 @@ import matplotlib.pyplot as plt
 import mplfinance as mpf
 import pandas as pd
 
-# Assuming these functions are imported from other modules
-from utils.helpers import fetch_latest_data, fill_with_ta
-
 should_reverse_obj = {
     "Exposure Time [%]": True,
     "Equity Final [$]": False,
@@ -57,7 +54,6 @@ def get_cell_color(val, ref, reverse=False):
         elif val < ref:
             return negative_color
     return ""
-
 
 
 def color_all_cells(df_me):

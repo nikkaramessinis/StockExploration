@@ -12,6 +12,7 @@ class RSIOscillatorCross(Strategy):
     rsi_window = 14
 
     def crossover_signals(self, buy_action, sell_action):
+        # print(f"Karam {self.rsi[-1]}")
         if crossover(self.rsi, self.upper_bound):
             sell_action()
         elif crossover(self.lower_bound, self.rsi):
@@ -28,3 +29,6 @@ class RSIOscillatorCross(Strategy):
         buy_print = lambda: print("change in momentum - buy")
         sell_print = lambda: print("change in momentum - sell")
         self.crossover_signals(buy_print, sell_print)
+
+    def __str__(self):
+        return f"MyClass[name=RSI]"
