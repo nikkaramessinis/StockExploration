@@ -1,8 +1,6 @@
 strategy_flow:
   #- optimization
-  #live_stategy
   - live
-  # - email_alerts
 stocks:
   - AAPL
   - MSFT
@@ -18,4 +16,4 @@ enable_optimizing: true
 email_alerts:
   enabled: true
   recipients:
-    - "nikaramess@gmail.com"
+    - "example@gmail.com"
