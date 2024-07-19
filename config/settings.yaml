@@ -1,7 +1,6 @@
 strategy_flow:
   - optimization
-  # - live
-  # - email_alerts
+  #- live
 stocks:
   - AAPL
   - MSFT
@@ -11,7 +10,7 @@ stocks:
   - AVGO
   - NVDA
 display_dashboard: true
-save_reference: true
+save_reference: false
 strategies: RSI
 enable_optimizing: true
 email_alerts:
