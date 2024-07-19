@@ -26,8 +26,8 @@ class RSIOscillatorCross(Strategy):
         self.crossover_signals(self.buy, self.position.close)
 
     def next_live(self):
-        buy_print = lambda: print("change in momentum - buy")
-        sell_print = lambda: print("change in momentum - sell")
+        buy_print = lambda: "change in momentum - buy"
+        sell_print = lambda: "change in momentum - sell"
         self.crossover_signals(buy_print, sell_print)
 
     def __str__(self):

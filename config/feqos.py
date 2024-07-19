@@ -222,12 +222,15 @@ def merge_reference_with_test(df_test, symbol_data):
     for symbol, df_data in symbol_data.items():
         sma_graph = plot_with_line(df_data, "sma_20")
         ema_graph = plot_with_line(df_data, "ema_20")
+        rsi_graph = plot_with_line(df_data, "rsi")
         graphs.extend(
             [
                 f"<h3>{symbol} - SMA 20</h3>",
                 sma_graph,
                 f"<h3>{symbol} - EMA 20</h3>",
                 ema_graph,
+                f"<h3>{symbol} - RSI </h3>",
+                rsi_graph,
             ]
         )
 

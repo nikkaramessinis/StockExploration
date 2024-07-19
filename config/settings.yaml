@@ -1,6 +1,6 @@
 strategy_flow:
-  - optimization
-  #- live
+  #- optimization
+  - live
 stocks:
   - AAPL
   - MSFT
