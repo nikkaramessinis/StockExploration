@@ -16,7 +16,7 @@ class LiveStrategyExecutor(Backtest):
         strategy.init()
         last_row = self._data.iloc[-1]
         print(f"Running live strategy... {last_row['Close']}")
-        strategy.next_live()
+        return strategy.next_live()
 
 
 # Example usage:

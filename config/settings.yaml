@@ -1,6 +1,6 @@
 strategy_flow:
-  #- optimization
-  - live
+  - optimization
+  #- live
 stocks:
   - AAPL
   - MSFT
@@ -9,6 +9,8 @@ stocks:
   - AMD
   - AVGO
   - NVDA
+  - TSLA
+  - NFLX
 display_dashboard: true
 save_reference: false
 strategies: RSI

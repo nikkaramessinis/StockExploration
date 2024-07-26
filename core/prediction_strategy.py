@@ -18,5 +18,4 @@ def run_prediction(
         args = {
             key: (range(value, value + 1, 5)) for key, value in optimized_args.items()
         }
-    print(f"Karam {strategy}, end")
     return analyze(strategy, stocks_list, display_dashboard, save_reference, args)

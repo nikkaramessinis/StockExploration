@@ -93,11 +93,11 @@ def live_strategy(strategy, stocks_list):
 
             print(f"Checking signal for {stock}... Signal: {signal}")
 
-            send_mail("body")
-            time.sleep(60)  # Sleep for 1 minute
             if signal and signal != previous[stock]:
                 body = f"New signal for {stock}: {signal}"
                 print(body)
+                send_mail("body")
+                time.sleep(60)  # Sleep for 1 minute
 
                 previous[stock] = signal
 

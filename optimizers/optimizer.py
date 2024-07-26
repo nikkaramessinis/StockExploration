@@ -5,6 +5,7 @@ from typing import Any, Callable, Dict, Optional, Tuple, Union
 
 from backtesting import Backtest
 
+from strategies.backtesting_ml import LogisticRegressionCross
 from strategies.backtesting_rsi import RSIOscillatorCross
 from utils.helpers import fetch_latest_data, fill_with_ta
 
@@ -17,7 +18,6 @@ if hasattr(multiprocessing, "set_start_method"):
         multiprocessing.set_start_method("fork")
     except:
         pass  # method already set
-
 
 
 class Optimizer:
@@ -75,18 +75,3 @@ class Optimizer:
 
         print(f"Averaged parameters: {averaged_params}")
         return averaged_params
-
-
-# Example usage:
-if __name__ == "__main__":
-    stocks_list = ["AAPL", "MSFT", "GOOGL"]  # Example stock list
-    default_values = {"upper_bound": 70, "lower_bound": 30, "rsi_window": 14}
-    param_ranges = {
-        "upper_bound": range(60, 81, 5),
-        "lower_bound": range(20, 41, 5),
-        "rsi_window": range(10, 21, 2),
-    }
-
-    optimizer = Optimizer(RSIOscillatorCross, stocks_list, default_values)
-    optimized_params = optimizer.optimize(param_ranges)
-    print("Optimized parameters:", optimized_params)

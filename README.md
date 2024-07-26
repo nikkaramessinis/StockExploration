@@ -61,3 +61,9 @@ create a secrets.py inside config dir and add the following information:
 GMAIL_ADDRESS=""
 
 GMAIL_PASSWORD=""
+
+
+To find the following information in your google account go to:
+1. Manage your account 
+2. Then in search bar search for "App password"
+3. Copy that in your secrets.py

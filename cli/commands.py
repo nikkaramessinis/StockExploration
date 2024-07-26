@@ -6,23 +6,23 @@ import pandas as pd
 from core.data_fetching import fetch_stock_data
 from core.email_alert import schedule_email_alert
 from core.prediction_strategy import run_prediction
-from strategies.live_strategy_reminder import live_strategy
 from strategies.backtesting_bollinger_bands import BBandsCross
 from strategies.backtesting_ema import EmaCross
 from strategies.backtesting_grip import GridCross
 from strategies.backtesting_mix import MixCross
+from strategies.backtesting_ml import LogisticRegressionCross
 from strategies.backtesting_rsi import RSIOscillatorCross
 from strategies.backtesting_sma import SmaCross
-
+from strategies.live_strategy_reminder import live_strategy
 
 strategies = {
     "SMA": SmaCross,
     "EMA": EmaCross,
     "RSI": RSIOscillatorCross,
     "BBands": BBandsCross,
+    "Logistic": LogisticRegressionCross,
     # Add other strategies here
 }
-
 
 
 def fetch_stocks(args):
@@ -62,12 +62,17 @@ def run_strategy(args):
 
         if flow_name == "optimization":
             run_prediction(
-                strategy, strategy_name, stocks_list, display_dashboard, save_reference, enable_optimizing
+                strategy,
+                strategy_name,
+                stocks_list,
+                display_dashboard,
+                save_reference,
+                enable_optimizing,
             )
         elif flow_name == "live":
             live_strategy(strategy, stocks_list)
     else:
-        print(f"Unknown strategy: {flow_name}")
+        assert False, f"Unknown strategy: {strategy_name} add it in strategies"
         return
 
 
