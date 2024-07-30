@@ -23,7 +23,7 @@ def analyze(strategy, symbols_list, display_dashboard, save_as_reference, param_
             maximize="Equity Final [$]",
             constraint=lambda param: param.upper_bound > param.lower_bound,
         )
-        bt.plot(filename=symbol)
+        bt.plot(filename=f"csvs/{symbol}")
         # print(f"type(stats {type(stats)}")
         stats["Name"] = symbol
         results_dataframe = results_dataframe._append(stats, ignore_index=True)
@@ -37,5 +37,5 @@ def analyze(strategy, symbols_list, display_dashboard, save_as_reference, param_
         merge_reference_with_test(results_dataframe, symbol_data)
 
     if save_as_reference:
-        results_dataframe.to_csv("reference.csv", index=False)
+        results_dataframe.to_csv("csvs/reference.csv", index=False)
     return results_dataframe, symbol_data

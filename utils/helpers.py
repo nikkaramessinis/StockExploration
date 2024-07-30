@@ -33,11 +33,38 @@ def fill_with_ta(df, write_to_csv=False):
     df["sma_20"] = ta.SMA(df["Close"], 15).shift(1)
 
     df["ema_20"] = ta.EMA(df["Close"], 20).shift(1)
+
+    # df["AOI"] = momentum.AwesomeOscillatorIndicator(df["High"], df["Low"])
     # Create Simple moving average 30 days
     df["SMA 30"] = df["Close"].shift(1).rolling(30).mean().shift(1)
     # Create Simple moving average 60 days
     df["SMA 60"] = df["Close"].shift(1).rolling(60).mean().shift(1)
-
+    macd, macd_signal, macd_hist = ta.MACD(
+        df["Close"].shift(1), fastperiod=12, slowperiod=26, signalperiod=9
+    )
+    df["Stochastic_K"], df["Stochastic_D"] = ta.STOCH(
+        df["High"],
+        df["Low"],
+        df["Close"],
+        fastk_period=14,
+        slowk_period=3,
+        slowk_matype=0,
+        slowd_period=3,
+        slowd_matype=0,
+    )
+    df["MACD"] = macd.shift(1)
+    df["MACD_Signal"] = macd_signal.shift(1)
+    df["MACD_Hist"] = macd_hist.shift(1)
+    df["ATR"] = ta.ATR(df["High"], df["Low"], df["Close"], timeperiod=14).shift(1)
+    df["OBV"] = ta.OBV(df["Close"], df["Volume"]).shift(1)
+    df["MFI"] = ta.MFI(df["High"], df["Low"], df["Close"], df["Volume"], timeperiod=14).shift(1)
+    df["ADX"] = ta.ADX(df["High"], df["Low"], df["Close"], timeperiod=14).shift(1)
+    upper, middle, lower = ta.BBANDS(
+        df["Close"], timeperiod=20, nbdevup=2, nbdevdn=2, matype=0
+    )
+    df["BB_Upper"] = upper.shift(1)
+    df["BB_Middle"] = middle.shift(1)
+    df["BB_Lower"] = lower.shift(1)
     # Create an empty columns to put the signals
     df["signal"] = np.nan
 
@@ -68,7 +95,7 @@ def fill_with_ta(df, write_to_csv=False):
     # Compute the return of the strategy
     # df["return"] = (df["pct"] * df["position"].shift(1) - df["cost"]) * 100
     df["ret"] = df["Close"].pct_change()
-    lagit(df, 2)
+    lagit(df, 4)
     df["direction"] = np.where(df.ret > 0, 1, 0)
     if write_to_csv:
         df.to_csv("csvs/arm.csv", index=False)

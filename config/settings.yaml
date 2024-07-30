@@ -13,7 +13,7 @@ stocks:
   - NFLX
 display_dashboard: true
 save_reference: false
-strategies: RSI
+strategies: Logistic
 enable_optimizing: true
 email_alerts:
   enabled: true

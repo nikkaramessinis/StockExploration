@@ -13,12 +13,10 @@ def main():
     flow_list = config.get("strategy_flow", [])
 
     for flow in flow_list:
-        from cli.commands import fetch_stocks
 
         class Args:
             stocks = config.get("stocks", [])
 
-        fetch_stocks(Args)
         if flow == "optimization" or flow == "live":
             from cli.commands import run_strategy
 
