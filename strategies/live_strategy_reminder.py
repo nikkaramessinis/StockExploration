@@ -82,7 +82,9 @@ def live_strategy(strategy, stocks_list):
     while True:
         for stock in stocks_list:
             df = fetch_latest_data(stock, True)
-            df = fill_with_ta(df)  # Make sure to add technical indicators
+            # if we do the live strategy we have already trained the model hence we shouldn't shift because we want
+            # to predict the next value not the current value
+            df = fill_with_ta(df, 0)  # Make sure to add technical indicators
 
             # Use the class method to generate the signal
             # We're passing the last two rows to allow for crossover calculation

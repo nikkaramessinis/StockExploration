@@ -18,11 +18,15 @@ def analyze(strategy, symbols_list, display_dashboard, save_as_reference, param_
         check_crossover(df)
         bt = Backtest(df, strategy, cash=1000, commission=0.002, exclusive_orders=True)
 
-        stats = bt.optimize(
-            **param_ranges,
-            maximize="Equity Final [$]",
-            constraint=lambda param: param.upper_bound > param.lower_bound,
-        )
+        if param_ranges:
+            stats = bt.optimize(
+                **param_ranges,
+                maximize="Equity Final [$]",
+                constraint=lambda param: param.upper_bound > param.lower_bound,
+            )
+        else:
+            stats = bt.run()
+
         bt.plot(filename=f"csvs/{symbol}")
         # print(f"type(stats {type(stats)}")
         stats["Name"] = symbol

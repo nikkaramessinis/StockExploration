@@ -46,10 +46,16 @@ columns_to_keep = [
 
 class LogisticRegressionCross(Strategy):
     def crossover_signals(self, buy_action, sell_action):
-        subset = [columns_to_keep]
-        if self.model.predict(self.data.df[-1]) > 0.6:
+        subset = self.data.df[columns_to_keep]
+        X = subset.drop(columns=["direction"])
+
+        X_last_row = X.iloc[-2].values.reshape(1, -1)
+
+        # Make the prediction
+        prediction = self.model.predict(X_last_row)[0]
+        if prediction > 0.6:
             buy_action()
-        elif self.model.predict(self.data.df[-1]) < 0.5:
+        elif prediction < 0.5:
             sell_action()
 
     def init(self):
@@ -102,11 +108,6 @@ class LogisticRegressionCross(Strategy):
 
         loss, accuracy = self.model.evaluate(X_test, y_test)
         print(f"Test Accuracy: {accuracy:.2f}")
-
-        # Confusion Matrix and Classification Report
-        print(confusion_matrix(y_test, predictions))
-        print(classification_report(y_test, predictions))
-        print(f"type(X) {type(X)} {X.df.columns}")
 
     def next(self):
         self.crossover_signals(self.buy, self.position.close)

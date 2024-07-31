@@ -24,25 +24,28 @@ def lagit(df: pd.DataFrame, lags: int) -> list:
     return lag_columns
 
 
-def fill_with_ta(df, write_to_csv=False):
-    df["engulfing"] = ta.CDLENGULFING(
-        df["Open"], df["High"], df["Low"], df["Close"]
-    ).shift(1)
-    df["rsi"] = ta.RSI(df["Close"], timeperiod=14).shift(1)
-    df["sma_15"] = ta.SMA(df["Close"], 15).shift(1)
-    df["sma_20"] = ta.SMA(df["Close"], 15).shift(1)
+def fill_with_ta(df, shift_periods=1):
+    def shift_by_periods(series):
+        return series.shift(shift_periods)
 
-    df["ema_20"] = ta.EMA(df["Close"], 20).shift(1)
+    df["engulfing"] = shift_by_periods(
+        ta.CDLENGULFING(df["Open"], df["High"], df["Low"], df["Close"])
+    )
+    df["rsi"] = shift_by_periods(ta.RSI(df["Close"], timeperiod=14))
+    df["sma_15"] = shift_by_periods(ta.SMA(df["Close"], 15))
+    df["sma_20"] = shift_by_periods(ta.SMA(df["Close"], 15))
+
+    df["ema_20"] = shift_by_periods(ta.EMA(df["Close"], 20))
 
     # df["AOI"] = momentum.AwesomeOscillatorIndicator(df["High"], df["Low"])
     # Create Simple moving average 30 days
-    df["SMA 30"] = df["Close"].shift(1).rolling(30).mean().shift(1)
+    df["SMA 30"] = shift_by_periods(df["Close"].shift(1).rolling(30).mean())
     # Create Simple moving average 60 days
-    df["SMA 60"] = df["Close"].shift(1).rolling(60).mean().shift(1)
+    df["SMA 60"] = shift_by_periods(df["Close"].shift(1).rolling(60).mean())
     macd, macd_signal, macd_hist = ta.MACD(
-        df["Close"].shift(1), fastperiod=12, slowperiod=26, signalperiod=9
+        df["Close"], fastperiod=12, slowperiod=26, signalperiod=9
     )
-    df["Stochastic_K"], df["Stochastic_D"] = ta.STOCH(
+    stochastic_k, stochastic_d = ta.STOCH(
         df["High"],
         df["Low"],
         df["Close"],
@@ -52,19 +55,28 @@ def fill_with_ta(df, write_to_csv=False):
         slowd_period=3,
         slowd_matype=0,
     )
-    df["MACD"] = macd.shift(1)
-    df["MACD_Signal"] = macd_signal.shift(1)
-    df["MACD_Hist"] = macd_hist.shift(1)
-    df["ATR"] = ta.ATR(df["High"], df["Low"], df["Close"], timeperiod=14).shift(1)
-    df["OBV"] = ta.OBV(df["Close"], df["Volume"]).shift(1)
-    df["MFI"] = ta.MFI(df["High"], df["Low"], df["Close"], df["Volume"], timeperiod=14).shift(1)
-    df["ADX"] = ta.ADX(df["High"], df["Low"], df["Close"], timeperiod=14).shift(1)
+    df["Stochastic_K"], df["Stochastic_D"] = shift_by_periods(
+        stochastic_k
+    ), shift_by_periods(stochastic_d)
+    df["MACD"] = shift_by_periods(macd)
+    df["MACD_Signal"] = shift_by_periods(macd_signal)
+    df["MACD_Hist"] = shift_by_periods(macd_hist)
+    df["ATR"] = shift_by_periods(
+        ta.ATR(df["High"], df["Low"], df["Close"], timeperiod=14)
+    )
+    df["OBV"] = shift_by_periods(ta.OBV(df["Close"], df["Volume"]))
+    df["MFI"] = shift_by_periods(
+        ta.MFI(df["High"], df["Low"], df["Close"], df["Volume"], timeperiod=14)
+    )
+    df["ADX"] = shift_by_periods(
+        ta.ADX(df["High"], df["Low"], df["Close"], timeperiod=14)
+    )
     upper, middle, lower = ta.BBANDS(
         df["Close"], timeperiod=20, nbdevup=2, nbdevdn=2, matype=0
     )
-    df["BB_Upper"] = upper.shift(1)
-    df["BB_Middle"] = middle.shift(1)
-    df["BB_Lower"] = lower.shift(1)
+    df["BB_Upper"] = shift_by_periods(upper)
+    df["BB_Middle"] = shift_by_periods(middle)
+    df["BB_Lower"] = shift_by_periods(lower)
     # Create an empty columns to put the signals
     df["signal"] = np.nan
 
@@ -78,27 +90,10 @@ def fill_with_ta(df, write_to_csv=False):
 
     df.loc[condition_buy, "signal"] = 1
     df.loc[condition_sell, "signal"] = -1
-    # We say signal when we open or close a trade and poistion to talk about the whole time we are into a trade
-    # df["position"] = df["signal"].fillna(method="ffill")
 
-    # We define a fix cost we need to pay each time we interact with the market
-    # cost_ind = 0.0001
-
-    # We create a vector of cost
-    # df["cost"] = (np.abs(df["signal"]) * cost_ind).fillna(
-    #    value=0
-    # )  # (-0.0001, 0, 0, 0, 0, 0 , 0, -0.0001, 0, 0) (-0.0001,-0.0001,-0.0001,-0.0001,-0.0001,)
-
-    # Compute the percentage of variation of the asset
-    # df["pct"] = df["Close"].pct_change(1)
-
-    # Compute the return of the strategy
-    # df["return"] = (df["pct"] * df["position"].shift(1) - df["cost"]) * 100
     df["ret"] = df["Close"].pct_change()
     lagit(df, 4)
     df["direction"] = np.where(df.ret > 0, 1, 0)
-    if write_to_csv:
-        df.to_csv("csvs/arm.csv", index=False)
     return df
 
 

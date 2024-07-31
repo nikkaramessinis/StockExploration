@@ -34,20 +34,8 @@ strategy_params = {
         },
     ),
     "Logistic": StrategyParams(
-        param_ranges={
-            "upper_bound": range(40, 85, 5),
-            "lower_bound": range(10, 45, 5),
-            "rsi_window": range(10, 30, 2),
-            "ema_period_1": range(5, 20, 3),
-            "ema_period_2": range(20, 50, 5),
-        },
-        param_defaults={
-            "upper_bound": 70,
-            "lower_bound": 30,
-            "rsi_window": 15,
-            "ema_period_1": 9,
-            "ema_period_2": 21,
-        },
+        param_ranges={},
+        param_defaults={},
     ),
 }
 

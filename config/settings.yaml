@@ -14,7 +14,7 @@ stocks:
 display_dashboard: true
 save_reference: false
 strategies: Logistic
-enable_optimizing: true
+enable_optimizing: false
 email_alerts:
   enabled: true
   recipients:
