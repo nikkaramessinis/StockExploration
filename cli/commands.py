@@ -19,6 +19,7 @@ strategies = {
     "EMA": EmaCross,
     "RSI": RSIOscillatorCross,
     "BBands": BBandsCross,
+    "Mix": MixCross,
     "Logistic": LogisticRegressionCross,
     # Add other strategies here
 }
@@ -31,6 +32,7 @@ def run_strategy(args):
     display_dashboard = args.display_dashboard
     save_reference = args.save_reference
     enable_optimizing = args.enable_optimizing
+    enable_opt_portfolio = args.enable_opt_portfolio
 
     if not strategy_name:
         print("Strategy name is required.")
@@ -49,6 +51,7 @@ def run_strategy(args):
                 display_dashboard,
                 save_reference,
                 enable_optimizing,
+                enable_opt_portfolio,
             )
         elif flow_name == "live":
             live_strategy(strategy, stocks_list)

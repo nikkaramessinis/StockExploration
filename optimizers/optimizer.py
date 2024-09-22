@@ -43,16 +43,23 @@ class Optimizer:
         return stats, optiheatmap
 
     def optimize(
-        self, param_ranges, constraint_func: Optional[Callable[[Any], bool]] = None
+        self,
+        param_ranges,
+        weights,
+        constraint_func: Optional[Callable[[Any], bool]] = None,
     ) -> Dict[str, Any]:
         param_sums = defaultdict(int)
-        for symbol in self.stocks_list:
+        for index, symbol in enumerate(self.stocks_list):
             print(f"Calling fetching data for symbol {symbol}")
             df = fetch_latest_data(symbol)
             df = fill_with_ta(df)
 
             bt = Backtest(
-                df, self.strategy, cash=1000, commission=0.002, exclusive_orders=True
+                df,
+                self.strategy,
+                cash=1000 * weights.iloc[index, 0],
+                commission=0.002,
+                exclusive_orders=True,
             )
 
             stats, optiheatmap = self.optimize_strategy(

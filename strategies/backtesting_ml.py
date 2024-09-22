@@ -1,3 +1,4 @@
+from functools import partial
 from numbers import Number
 
 import numpy as np
@@ -49,12 +50,15 @@ class LogisticRegressionCross(Strategy):
         subset = self.data.df[columns_to_keep]
         X = subset.drop(columns=["direction"])
 
-        X_last_row = X.iloc[-2].values.reshape(1, -1)
+        X_last_row = X.iloc[-1].values.reshape(1, -1)
+        X_second_to_last_row = X.iloc[-2].values.reshape(1, -1)
 
         # Make the prediction
         prediction = self.model.predict(X_last_row)[0]
-        if prediction > 0.6:
-            buy_action()
+        prediction_1 = self.model.predict(X_second_to_last_row)[0]
+        if prediction > 0.7 and prediction_1 > 0.5:
+            self.price = self.data.Close[-1]
+            self.buy(sl=self.price - 10)
         elif prediction < 0.5:
             sell_action()
 
@@ -110,7 +114,8 @@ class LogisticRegressionCross(Strategy):
         print(f"Test Accuracy: {accuracy:.2f}")
 
     def next(self):
-        self.crossover_signals(self.buy, self.position.close)
+        partial_buy = partial(self.buy, sl=self.position.close)
+        self.crossover_signals(partial_buy, self.position.close)
 
     def next_live(self, prev_value=""):
         pass

@@ -10,11 +10,14 @@ stocks:
   - AVGO
   - NVDA
   - TSLA
-  - NFLX
+  #- NFLX
+  #- SMCI
+  #- LLY
 display_dashboard: true
 save_reference: false
-strategies: Logistic
+strategies: RSI
 enable_optimizing: false
+enable_opt_portfolio: false
 email_alerts:
   enabled: true
   recipients:

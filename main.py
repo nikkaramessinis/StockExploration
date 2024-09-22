@@ -5,7 +5,13 @@ warnings.filterwarnings("ignore", category=FutureWarning, module="backtesting")
 
 import json
 
-from config.config import load_config
+import yaml
+
+
+def load_config(config_file="config/settings.yaml"):
+    with open(config_file, "r") as file:
+        config = yaml.safe_load(file)
+    return config
 
 
 def main():
@@ -28,6 +34,7 @@ def main():
                 display_dashboard = config.get("display_dashboard", False)
                 save_reference = config.get("save_reference", False)
                 enable_optimizing = config.get("enable_optimizing", "RSI")
+                enable_opt_portfolio = config.get("enable_opt_portfolio", False)
 
             run_strategy(Args)
 
