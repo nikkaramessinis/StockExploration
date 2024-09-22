@@ -1,6 +1,7 @@
 import multiprocessing
 import warnings
 from collections import defaultdict
+from datetime import date
 from typing import Any, Callable, Dict, Optional, Tuple, Union
 
 from backtesting import Backtest
@@ -51,7 +52,7 @@ class Optimizer:
         param_sums = defaultdict(int)
         for index, symbol in enumerate(self.stocks_list):
             print(f"Calling fetching data for symbol {symbol}")
-            df = fetch_latest_data(symbol)
+            df = fetch_latest_data(symbol, date.today())
             df = fill_with_ta(df)
 
             bt = Backtest(

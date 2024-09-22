@@ -18,7 +18,11 @@ class RSIOscillatorCross(Strategy):
         if crossover(self.rsi, self.upper_bound):
             return sell_action()
         elif crossover(self.lower_bound, self.rsi):
-            return buy_action()
+            high = self.data.High[-2]
+            low = self.data.Low[-2]
+            prev_close = self.data.Close[-3]
+            atr = max(high - low, abs(high - prev_close), abs(low - prev_close))
+            return buy_action(sl=self.data.Close[-1] - 2 * atr)
         if not is_live:
             return
 

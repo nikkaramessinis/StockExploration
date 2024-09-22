@@ -109,14 +109,11 @@ def check_crossover(df):
         return Momentum.UPWARD
 
 
-def fetch_latest_data(
-    ticker,
-    is_live=False,
-    start_date="2021-09-27",
-):
+def fetch_latest_data(ticker, end_date, is_live=False, start_date="2021-09-27"):
     #
     # end_date = "2024-06-30"
-    end_date = date.today()
+    # end_date = date.today()
+    end_date = "2024-07-19"
     if is_live:
         end_date = date.today()
     # df = yf.download(tickers=symbols_list, start=start_date, end=str(end_date), auto_adjust=True)

@@ -1,3 +1,5 @@
+from datetime import date
+
 import pandas as pd
 from backtesting import Backtest
 
@@ -18,7 +20,8 @@ def analyze(
 
     for index, symbol in enumerate(symbols_list):
         print(f"Fetching data for {symbol}")
-        df = fetch_latest_data(symbol)
+        end_date = date.today()
+        df = fetch_latest_data(symbol, end_date)
         df = fill_with_ta(df)
 
         check_crossover(df)
@@ -46,6 +49,7 @@ def analyze(
         # print(f"type(stats {type(stats)}")
         stats["Name"] = symbol
         stats["Cash"] = 1000 * stock_weight
+        stats["End_Date"] = end_date
         results_dataframe = results_dataframe._append(stats, ignore_index=True)
 
         # Store the DataFrame for each symbol

@@ -18,14 +18,14 @@ should_reverse_obj = {
     "Sharpe Ratio": False,
     "Sortino Ratio": False,
     "Calmar Ratio": "DROP",
-    "Max. Drawdown [%]": True,
-    "Avg. Drawdown [%]": True,
+    "Max. Drawdown [%]": False,
+    "Avg. Drawdown [%]": False,
     "Max. Drawdown Duration": True,
     "Avg. Drawdown Duration": True,
     "# Trades": True,
     "Win Rate [%]": False,
     "Best Trade [%]": False,
-    "Worst Trade [%]": True,
+    "Worst Trade [%]": False,
     "Avg. Trade [%]": False,
     "Max. Trade Duration": True,
     "Avg. Trade Duration": True,
@@ -35,6 +35,7 @@ should_reverse_obj = {
     "_strategy": "",
     "Name": "",
     "source": "",
+    "Cash": "",
 }
 
 
@@ -49,9 +50,12 @@ def get_cell_color(val, ref, reverse=False):
         and not isinstance(val, pd.Timestamp)
         and isinstance(ref, (int, float))
     ):
+        print(f"positive_color {positive_color} if val{val} > ref{ref}")
         if val > ref:
+            print(f"returning positive_color {positive_color}")
             return positive_color
         elif val < ref:
+            print(f"returning negative_color {negative_color}")
             return negative_color
     return ""
 
@@ -77,6 +81,7 @@ def color_all_cells(df_me):
                         should_reverse_obj[col],
                     )
                     inner_colors[df_colored.columns.get_loc(col)] = color
+                    print(f"col {col} color {color}")
 
         colours.append(inner_colors)
     return colours
@@ -180,7 +185,9 @@ def plot_with_line(df, column):
     df.index = pd.to_datetime(df.index)
 
     # Prepare the plot
-    additional_plots = [mpf.make_addplot(df[column], color="orange", width=1)]
+    additional_plots = [
+        mpf.make_addplot(df[column], color="orange", width=1, type="line")
+    ]
 
     # Create a BytesIO object to save the plot
     buf = BytesIO()
