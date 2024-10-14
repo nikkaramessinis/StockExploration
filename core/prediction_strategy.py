@@ -4,14 +4,20 @@ import pandas as pd
 from backtesting import Backtest
 
 from cli.weightcalculation import calculate_weights
-from config.feqos import merge_reference_with_test
+from config.feqos import display_dashboard
 from optimizers.optimizer import Optimizer
 from optimizers.strategy_params import get_params_defaults, get_params_ranges
 from utils.helpers import check_crossover, fetch_latest_data, fill_with_ta
 
 
 def analyze(
-    strategy, symbols_list, display_dashboard, save_as_reference, weights, param_ranges
+    strategy,
+    symbols_list,
+    enable_dashboard,
+    save_as_reference,
+    weights,
+    enable_analyzer,
+    param_ranges,
 ):
 
     print(weights.columns)
@@ -31,7 +37,7 @@ def analyze(
         bt = Backtest(
             df,
             strategy,
-            cash=1000 * stock_weight,
+            cash=10000 * stock_weight,
             commission=0.002,
             exclusive_orders=True,
         )
@@ -43,12 +49,15 @@ def analyze(
                 constraint=lambda param: param.upper_bound > param.lower_bound,
             )
         else:
-            stats = bt.run()
+            stats = bt.run(plot=False)
+        # print(f"Karam {bt._strategy} closed_trade{stats}")
+        # for trade in bt.broker.closed_trades:
+        #    print("Karam trade {trade}")
 
         bt.plot(filename=f"csvs/{symbol}")
         # print(f"type(stats {type(stats)}")
         stats["Name"] = symbol
-        stats["Cash"] = 1000 * stock_weight
+        stats["Cash"] = 10000 * stock_weight
         stats["End_Date"] = end_date
         results_dataframe = results_dataframe._append(stats, ignore_index=True)
 
@@ -57,8 +66,8 @@ def analyze(
 
     results_dataframe.to_csv("csvs/stats.csv", index=False)
 
-    if display_dashboard:
-        merge_reference_with_test(results_dataframe, symbol_data)
+    if enabe_dashboard:
+        display_dashboard(results_dataframe, symbol_data, enable_analyzer)
 
     if save_as_reference:
         results_dataframe.to_csv("csvs/reference.csv", index=False)
@@ -73,6 +82,7 @@ def run_prediction(
     save_reference,
     enable_optimizing,
     enable_opt_portfolio,
+    enable_analyzer,
 ):
     args = get_params_defaults(strategy_name)
     weights = pd.DataFrame({"weights": [1] * len(stocks_list)})
@@ -88,5 +98,11 @@ def run_prediction(
             key: (range(value, value + 1, 5)) for key, value in optimized_args.items()
         }
     return analyze(
-        strategy, stocks_list, display_dashboard, save_reference, weights, args
+        strategy,
+        stocks_list,
+        display_dashboard,
+        save_reference,
+        weights,
+        enable_analyzer,
+        args,
     )

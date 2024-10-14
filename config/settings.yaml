@@ -9,15 +9,16 @@ stocks:
   - AMD
   - AVGO
   - NVDA
-  - TSLA
+  #- TSLA
   #- NFLX
-  #- SMCI
+  - SMCI
   #- LLY
 display_dashboard: true
 save_reference: false
 strategies: RSI
 enable_optimizing: false
 enable_opt_portfolio: false
+enable_sentiment_analyzer: true
 email_alerts:
   enabled: true
   recipients:

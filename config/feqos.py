@@ -50,12 +50,12 @@ def get_cell_color(val, ref, reverse=False):
         and not isinstance(val, pd.Timestamp)
         and isinstance(ref, (int, float))
     ):
-        print(f"positive_color {positive_color} if val{val} > ref{ref}")
+        # print(f"positive_color {positive_color} if val{val} > ref{ref}")
         if val > ref:
-            print(f"returning positive_color {positive_color}")
+            # print(f"returning positive_color {positive_color}")
             return positive_color
         elif val < ref:
-            print(f"returning negative_color {negative_color}")
+            # print(f"returning negative_color {negative_color}")
             return negative_color
     return ""
 
@@ -81,7 +81,7 @@ def color_all_cells(df_me):
                         should_reverse_obj[col],
                     )
                     inner_colors[df_colored.columns.get_loc(col)] = color
-                    print(f"col {col} color {color}")
+                    # print(f"col {col} color {color}")
 
         colours.append(inner_colors)
     return colours
@@ -212,6 +212,9 @@ def plot_with_line(df, column):
 
     return f'<img src="data:image/png;base64,{graph_url}">'
 
+
+
+def enable_display_dashboard(df_test, symbol_data, enable_analyzer):
 
 def merge_reference_with_test(df_test, symbol_data):
     df_reference = pd.read_csv("csvs/reference.csv")
